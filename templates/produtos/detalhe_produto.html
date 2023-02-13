@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% block head %}{%endblock%}
+{% block conteudo%}
+
+{% if detalhe %}
+
+<div class="row gx-4 gx-lg-5 align-items-center">
+    <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ detalhe.imagem.url }}" alt="..." /></div>
+    <div class="col-md-6">
+        <div class="small mb-1">SKU: BST-498</div>
+        <h1 class="display-5 fw-bolder">{{ detalhe.nome}}</h1>
+        <div class="fs-5 mb-5">
+            {% if detalhe.preco_promocional %}
+            <span class="text-decoration-line-through">{{ detalhe.preco }}</span>
+            <span>{{ detalhe.preco_promocional }}</span>
+            {%else%}
+            <span>{{ detalhe.preco }}</span>
+            {% endif %}
+        </div>
+        <p class="lead">{{ detalhe.descricao_longa }}</p>
+        <div class="d-flex">
+            <button class="btn btn-outline-dark flex-shrink-0" type="button">
+                <i class="bi-cart-fill me-1"></i>
+                Comprar
+            </button>
+        </div>
+    </div>
+</div>
+</div>
+</section>
+<!-- Related items section-->
+<section class="py-5 bg-light">
+<div class="container px-4 px-lg-5 mt-5">
+<h2 class="fw-bolder mb-4">Produtos Relacionados</h2>
+<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+   {% for produto in produtos %} 
+    {% include 'parciais/_cards_produtos.html' %}
+   {% endfor %}
+</div> 
+</div>
+
+{%else%}
+
+<h1>Produto nao Encontrado</h1>
+
+{% endif%}
+{% endblock %}
