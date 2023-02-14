@@ -9,7 +9,6 @@ class Perfil_Usuario(models.Model):
     email = models.EmailField()
     telefone = models.CharField(max_length=11)
     cpf = models.CharField(max_length=11)
-    senha = models.CharField(max_length=50)
     
     def __str__(self):
         return self.nome

@@ -41,20 +41,20 @@ class Cadastro(View):
 
 
     def post(self,request, *args, **kwargs):
-
-        nome = self.request.POST.get('nome')
-        sobrenome  = self.request.POST.get('sobrenome')
-        email = self.request.POST.get('email')
-        cpf = self.request.POST.get('cpf')
-        senha = self.request.POST.get('senha')
-        
         if self.perfilform.is_valid():
+            nome = self.perfilform.cleaned_data.get('nome')
+            sobrenome  = self.perfilform.cleaned_data.get('sobrenome')
+            email = self.perfilform.cleaned_data.get('email')
+            cpf = self.perfilform.cleaned_data.get('cpf')
+            senha = self.perfilform.cleaned_data.get('senha')
+            
+        
             user = User.objects.create_user(
                 username=cpf,
                 email=email,
                 password=senha,
                 first_name=nome,
-                last_name=sobrenome
+                last_name=sobrenome,
             )
             user.save()
 
