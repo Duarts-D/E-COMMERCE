@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path,os
 from dotenv import load_dotenv
+from django.contrib.messages import constants
 
 load_dotenv()
 
@@ -149,3 +150,12 @@ SESSION_SAVE_EVERY_REQUEST = False
 
 #Crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap'
+
+#MESSAGES
+MESSAGE_TAGS = {
+    constants.DEBUG: 'alert-info',
+    constants.ERROR: 'alert-danger',
+    constants.INFO: 'alert-info',
+    constants.SUCCESS: 'alert-success',
+    constants.WARNING: 'alert-warning',
+}

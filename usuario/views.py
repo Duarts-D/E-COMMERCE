@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from usuario.forms import PerfilForm
 from usuario.models import Perfil_Usuario
+from django.contrib import messages
 
 class Login(View):
     template_name = 'usuarios/login.html'
@@ -12,8 +13,6 @@ class Login(View):
         email = self.request.POST.get('email')
         password = self.request.POST.get('password')
 
-        
-
         if User.objects.filter(email=email).exists():
             username = User.objects.filter(email=email).values_list('username',flat=True).get()
             user = authenticate(self.request,
@@ -21,9 +20,12 @@ class Login(View):
 
             if user is not None:
                 login(self.request,user)
-                return redirect('produto:produtos')
 
-        return redirect('perfils:login')      
+                return redirect('produto:produtos')
+        
+        messages.error(self.request,'Usuario ou senha incorretos')
+        return redirect('usuario:login')      
+    
     def get(self, *args,**kwargs):
         return render(self.request,self.template_name)
 
@@ -46,21 +48,23 @@ class Cadastro(View):
         cpf = self.request.POST.get('cpf')
         senha = self.request.POST.get('senha')
         
-        user = User.objects.create_user(
-            username=cpf,
-            email=email,
-            password=senha,
-            first_name=nome,
-            last_name=sobrenome
-        )
-        user.save()
-        
         if self.perfilform.is_valid():
+            user = User.objects.create_user(
+                username=cpf,
+                email=email,
+                password=senha,
+                first_name=nome,
+                last_name=sobrenome
+            )
+            user.save()
+
             perfil = self.perfilform.save(commit=False)
             perfil.user = user
             perfil.save()
 
-        return redirect('perfils:login')
+            return redirect('usuario:login')
+        else:
+            return render(self.request,self.template_name,self.contexto)
     
     def get(self, *args,**kwargs):
         return render(self.request,self.template_name,self.contexto)
