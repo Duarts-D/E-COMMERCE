@@ -16,27 +16,18 @@
         <link href="{% static 'home_page/css/styles.css' %}" rel="stylesheet" />
     </head>
     <body>
-            {% include 'parciais/_nav.html' %}
+    
+    {% include 'parciais/_nav.html' %}
 
-            <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-
-
-            {% block head%}
-                {% include 'parciais/_head.html' %}
-            {% endblock %}
+    {% block head%}
+        {% include 'parciais/_head.html' %}
+    {% endblock %}
 
 
 
-
-            {%block conteudo%}{% endblock %}
-
-
-
-          
-</div>
-</section>
+    {%block conteudo%}{% endblock %}
 
 </body>
 {% include 'parciais/_footer.html' %}
+
 </html>

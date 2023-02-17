@@ -68,3 +68,9 @@ class Cadastro(View):
     
     def get(self, *args,**kwargs):
         return render(self.request,self.template_name,self.contexto)
+
+class Logout(View):
+    def get(self,*args,**kwargs):
+        logout(self.request)
+        messages.success(self.request,'Deslogado com sucesso')
+        return redirect('produto:produtos')
