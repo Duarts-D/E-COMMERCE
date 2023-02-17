@@ -1,0 +1,113 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block conteudo %}
+
+{% if carrinho %}
+<main class="container mt-4 mb-4">
+
+    <div class="row mt-3">
+        <div class="col">
+            <h3>Carrinho de compras</h3>
+            <p class="lead">Os produtos, quantidades e preços que você escolheu.</p>
+        {% include 'parciais/_messages.html' %}
+            
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th class="d-none d-lg-block">Imagem</th>
+                        <th>Produto</th>
+                        <th>V.</th>
+                        <th>QTD.</th>
+                        <th>Total</th>
+                    </tr>
+            
+                    {% for itens in carrinho.values %}
+                    <tr>
+                        <td class="d-none d-lg-block">
+                            {% if not itens.imagem == '' %}
+                            <div class="card-img" style="width: 12rem;">
+                                <img class="card-img" src="{% get_media_prefix %}{{ itens.imagem }}">
+                            {% else %}
+                                <img class="card-img" src="{% static 'imgs/imagem_indisponivel.jpg' %}" >
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'produto:detalhe' itens.slug %}">
+                            {{ itens.produto_nome }}
+                            </a>
+                            <a class="ml-3" href="#">
+                                <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td>
+                                {{ itens.variacao_nome }}
+                        </td>
+                        <td>
+                            {{ itens.quantidade }} x
+                            
+                            {% if itens.preco_unitario_promocional %}
+                                {{ itens.preco_unitario_promocional}}
+                            {%else%}
+                                {{itens.preco_unitario}}
+                            {% endif %}
+            
+                        </td>
+                        
+                        {% if itens.preco_unitario_promocional %}
+                            <td>{{itens.preco_quantativo_promocional}}</td>
+                        {% else %}
+                            <td>{{ itens.preco_quantativo }}</td>
+                        {% endif %}
+            
+                    </tr>
+                    {% endfor %}
+            
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-lg">
+            <p class='lead'>Total no carrinho</p>
+
+            <div class='table-responsive'>
+                <table class="table">
+                    <tr>
+                        <td class="font-weight-bold">Total</td>
+                        <td>#</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg mt-auto">
+            
+            {% if request.user.is_authenticated %}
+            <a class="btn btn-lg btn-block btn-primary" href="#">
+                Comprar
+            </a>
+            {% else %}
+            <a class="btn btn-lg btn-block btn-primary" href="{% url 'produto:produtos' %}">
+               Cotinuar comprando
+            </a>
+
+            <a class="btn btn-lg btn-block btn-primary" href="{% url 'usuario:login'%}">
+                Entrar ou Cadastrar 
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{%else%}
+<main class="container mt-4 mb-4">
+    {% include 'parciais/_messages.html' %}
+    <div class="row mt-3">
+        <div class="col">
+            <h3>Carrinho Vazio</h3>
+            <p class="lead">Nao a produtos no seu carrinho.</p>
+            <div>
+        </div>
+    {%endif%}
+{%endblock%}

@@ -1,5 +1,2 @@
-import re
-
-def clean_carateristicos(valor):
-   
-        return KeyError
+def qtdcar(carrinho):
+        return sum([item['quantidade'] for item in carrinho.values()])

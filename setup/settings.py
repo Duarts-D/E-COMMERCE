@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'produto.apps.ProdutoConfig',
     'endereco.apps.EnderecoConfig',
     'usuario.apps.UsuarioConfig',
+    'carrinho.apps.CarrinhoConfig',
     'crispy_forms',
 ]
 

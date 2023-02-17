@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('carrinho/',include('carrinho.urls')),
     path('',include('usuario.urls')),
     path('admin/', admin.site.urls),
     path('',include('produto.urls')),
