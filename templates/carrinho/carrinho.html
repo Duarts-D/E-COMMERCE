@@ -1,6 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
-
+{% load ultilsfilter %}
 {% block conteudo %}
 
 {% if carrinho %}
@@ -17,8 +17,8 @@
                     <tr>
                         <th class="d-none d-lg-block">Imagem</th>
                         <th>Produto</th>
-                        <th>V.</th>
-                        <th>QTD.</th>
+                        <th>Quantidade</th>
+                        <th>Valor Unit.</th>
                         <th>Total</th>
                     </tr>
             
@@ -36,28 +36,44 @@
                             <a href="{% url 'produto:detalhe' itens.slug %}">
                             {{ itens.produto_nome }}
                             </a>
-                            <a class="ml-3" href="#">
-                                <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
+                        </td>
+                        <td>
+
+                            <div style="display: flex; align-items: center; width: fit-content;">
+                                {% if itens.quantidade == 1 %}
+                                <a style="color: gray;">
+                                {%else%}
+                                <a href="{% url 'cars:del_carrinho_unitario'%}?car_del={{itens.produto_ids}}" style="color: orange;">
+                                {% endif %}
+                                    <h2 class="bi bi-chevron-left"></h2>
+                                </a>
+
+                                <h2 class="text-center">{{ itens.quantidade }}</h2>
+                                
+                                <a href="{% url 'cars:adc_carrinho' %}?car={{itens.produto_ids}}"  style="color: orange;">
+                                    <h2 class="bi bi-chevron-right" ></h2>
+                                </a>
+                            </div>
+
+                            <a class="btn-outline-danger" class="ml-3" href="{% url 'cars:del_carrinho'%}?car_del={{itens.produto_ids}}">
+                                <i class="bi bi-trash-fill" ></i>
+                                Remover
                             </a>
-                        </td>
-                        <td>
-                                {{ itens.variacao_nome }}
-                        </td>
-                        <td>
-                            {{ itens.quantidade }} x
                             
+                        </td>
+
+                        <td>
                             {% if itens.preco_unitario_promocional %}
-                                {{ itens.preco_unitario_promocional}}
+                                {{ itens.preco_unitario_promocional |valores}}
                             {%else%}
-                                {{itens.preco_unitario}}
+                            {{itens.preco_unitario |valores}}
                             {% endif %}
-            
                         </td>
                         
                         {% if itens.preco_unitario_promocional %}
-                            <td>{{itens.preco_quantativo_promocional}}</td>
+                            <td>{{itens.preco_total_promo|valores}}</td>
                         {% else %}
-                            <td>{{ itens.preco_quantativo }}</td>
+                            <td>{{ itens.preco_total_unitario|valores }}</td>
                         {% endif %}
             
                     </tr>
@@ -76,8 +92,7 @@
             <div class='table-responsive'>
                 <table class="table">
                     <tr>
-                        <td class="font-weight-bold">Total</td>
-                        <td>#</td>
+                        <td><h1>{{carrinho|total_valores|valores}}</h1></td>
                     </tr>
                 </table>
             </div>
@@ -88,6 +103,9 @@
             <a class="btn btn-lg btn-block btn-primary" href="#">
                 Comprar
             </a>
+            <a class="btn btn-lg btn-block btn-primary" href="{% url 'produto:produtos' %}">
+                Cotinuar comprando
+             </a>
             {% else %}
             <a class="btn btn-lg btn-block btn-primary" href="{% url 'produto:produtos' %}">
                Cotinuar comprando
@@ -100,14 +118,31 @@
         </div>
     </div>
 </main>
+
 {%else%}
-<main class="container mt-4 mb-4">
+<section class="py-5" >
+    <div class="d-flex justify-content-center">
+    <div>
+        <h1>Carrinho Vazio</h1>
+    </div>
+    </div>
+<div class="container px-4 px-lg-5 mt-3">
     {% include 'parciais/_messages.html' %}
-    <div class="row mt-3">
-        <div class="col">
-            <h3>Carrinho Vazio</h3>
-            <p class="lead">Nao a produtos no seu carrinho.</p>
-            <div>
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <a href="{% url 'produto:produtos' %}">        
+        <button class="btn btn-outline-danger" >
+                <h1><i  class="bi-cart-fill me-1"></i></h1>
+                <h1>Continuar Comprando</h1>
+                <span class="badge bg-dark text-white ms-1 rounded-pill"></span>
+            </button>
+
+        </a>
         </div>
+    </div>
+    </section>
+{%block footer %}
+<footer class="footer bg-dark py-3 fixed-bottom mt-5">
+{%endblock%}
+
     {%endif%}
 {%endblock%}
