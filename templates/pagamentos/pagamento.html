@@ -1,0 +1,95 @@
+{% extends 'base/base.html' %}
+{% block head%}
+{% endblock %}
+
+{% block conteudo %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row mb-5">
+            <div class="col-lg">
+                <h2>Resumo da sua compra</h2>
+
+                <p class="lead">Dados do usuário</p>
+                <p>Caso precise editar, <a href="#">clique aqui</a></p>
+                <dl class="row">
+                    <dt class="col-lg-2">Nome:</dt>
+                    <dd class="col-lg-4">{{ perfil_usuario.user_perfil.nome}}</dd>
+                    <dt class="col-lg-2">Sobrenome:</dt>
+                    <dd class="col-lg-4">{{ perfil_usuario.user_perfil.sobrenome}}</dd>
+                    
+                    <dt class="col-lg-2">Idade:</dt>
+                    <dd class="col-lg-4">x</dd>
+                    <dt class="col-lg-2">Nascimento:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.user_perfil.data_de_nascimento}}</dd>
+                    
+                    <dt class="col-lg-2">CPF:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.user_perfil.cpf}}</dd>
+                    <dt class="col-lg-2">E-mail:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.user_perfil.email}}</dd>
+                </dl>
+
+                <p class="lead"><b>Dados de endereço</b></p>
+                <p>Caso precise editar, <a href="#">#</a></p>
+                <dl class="row">
+                    <dt class="col-lg-2">Endereço:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.rua_avenida}}</dd>
+                    <dt class="col-lg-2">Numero:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.numero}}</dd>
+
+                    <dt class="col-lg-2">Complemento:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.complemento}}</dd>
+                    <dt class="col-lg-2">Bairro:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.bairro}}</dd>
+
+                    <dt class="col-lg-2">Cidade:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.cidade}}</dd>
+                    <dt class="col-lg-2">Estado:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.get_estado_display}}</dd>
+
+                    <dt class="col-lg-2">CEP:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.cep}}</dd>
+
+                    <dt class="col-lg-2">Telefone:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.telefone}}</dd>
+
+                    <dt class="col-lg-2">Localidade:</dt>
+                    <dd class="col-lg-4">{{perfil_usuario.get_trabalho_casa_display}}</dd>
+
+                    <dt class="col-lg-2">Informacao:</dt>
+                    {% if not perfil_usuario.infomacao %}
+                        <dd class="col-lg-4">-------------</dd>
+                    {% else %}
+                        <dd class="col-lg-4">{{perfil_usuario.infomacao}}</dd>
+                    {% endif %}
+                    
+                </dl>
+            </div>
+        </div>
+
+
+
+        <div class="row mt-3">
+            <div class="col">
+                <h3>Resumo do carrinho</h3>
+                <p class="lead">Os produtos, quantidades e preços que você escolheu.</p>
+                #TODO coloca os produtos
+            </div>
+        </div>
+        <div class="row mt-3">
+        <div class="col" >
+            <p class="lead text-center"><span class="font-weight-bold">Total do carrinho</span> {{carrinho}}</p></h3>
+        </div>
+    </div>
+
+            <div class="col">
+                <a class="btn btn-block btn-primary btn-lg" href="#">
+                    Realizar pedido e pagar
+                </a>
+            </div>
+        </div>
+
+</div>
+</div>
+</section>
+{% endblock %}

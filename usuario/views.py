@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from usuario.forms import PerfilForm
 from usuario.models import Perfil_Usuario
 from django.contrib import messages
-from django.forms import ValidationError
+
 class Login(View):
     template_name = 'usuarios/login.html'
 
@@ -21,7 +21,12 @@ class Login(View):
             if user is not None:
                 login(self.request,user)
 
-                return redirect('produto:produtos')
+                
+                if not self.request.session.get('carrinho'):
+                    return redirect('produto:produtos')
+                
+                return redirect('cars:carrinho')
+        
         messages.error(self.request,'Email ou senha incorreto')
         return redirect('usuario:login')      
     

@@ -19,6 +19,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path('endereco/',include('endereco.urls')),
+    path('pedido/',include('pedido.urls')),
     path('carrinho/',include('carrinho.urls')),
     path('',include('usuario.urls')),
     path('admin/', admin.site.urls),

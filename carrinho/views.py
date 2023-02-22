@@ -132,6 +132,7 @@ class DelCarrinho(View):
         self.request.session.save()
         
         return redirect(http_refere)
+        
 class DelCarrinho_Unitario(View):
     def get(self,*args,**kwargs):
         http_refere = self.request.META.get(
@@ -140,12 +141,14 @@ class DelCarrinho_Unitario(View):
             )
         produto_id = self.request.GET.get('car_del')
 
+
         if not produto_id:
             return redirect(http_refere)
         
         carrinho = self.request.session['carrinho']
         
-        if not produto_id in carrinho[produto_id]:
+
+        if not produto_id in carrinho[produto_id]['produto_ids']:
             return redirect('produto:produtos')
 
         quantidade_carrinho = carrinho[produto_id]['quantidade']
