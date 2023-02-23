@@ -2,11 +2,15 @@ from django.shortcuts import render,redirect,reverse,get_object_or_404
 from django.views.generic import View
 from django.contrib import messages
 from produto.models import Produto
+from urllib.parse import urlparse
 import re
 
 class AdcCarrinho(View):
+
+
     def get(self,*args,**kwargs):
 
+     
         http_refere = self.request.META.get(
             'HTTP_REFERER',
             reverse('produto:produtos')
@@ -33,7 +37,6 @@ class AdcCarrinho(View):
         produto_nome = produto.nome
         preco_unitario = produto.preco 
         preco_unitario_promo = produto.preco_promocional
-        quantidade = 1
         slug = produto.slug
         imagem = produto.imagem
 
@@ -94,7 +97,17 @@ class AdcCarrinho(View):
             f'Produto {produto_nome} - Adicionado ao seu'
             f' Carrinho {carrinho[produto_ids]["quantidade"]}x. '
         )
-        return redirect('cars:carrinho')
+
+        if 'HTTP_REFERER' in self.request.META:
+            url_anterior = self.request.META['HTTP_REFERER']
+            path_anterior = urlparse(url_anterior).path
+            pach_slug = f'/{slug}'
+            if path_anterior is '/':
+                return redirect('cars:carrinho')
+            if path_anterior == pach_slug:
+                return redirect('cars:carrinho')
+
+        return redirect(http_refere)
 
 class Carrinho(View):
     template_name = 'carrinho/carrinho.html'
@@ -125,7 +138,7 @@ class DelCarrinho(View):
         del_carrinho = self.request.session['carrinho'][produto_id]
         messages.success(
             self.request,
-            f'Produto {del_carrinho["produto_nome"]}'
+            f'{del_carrinho["produto_nome"]}'
             f' removido do seu carrinho')
         
         del self.request.session['carrinho'][produto_id]
@@ -166,7 +179,8 @@ class DelCarrinho_Unitario(View):
         carrinho[produto_id]['preco_total_promo'] = preco_promo*\
             quantidade_carrinho
 
-
+        messages.warning(self.request,f'{carrinho[produto_id]["produto_nome"]}'
+            f' Retirado do seu carrinho.')
         self.request.session.save()
         return redirect(http_refere)
 

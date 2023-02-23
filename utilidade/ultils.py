@@ -13,7 +13,7 @@ def total_valoresp(valores):
                         item.get('preco_total_unitario')
                         if item.get('preco_total_unitario')
                         else item.get('preco_total_promo')
-                        for item 
-                        in valores.values()
+                        for item in valores.values()
                 ])
-        return valor_total
+        vlaor = round(valor_total,2)
+        return vlaor

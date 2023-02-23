@@ -25,7 +25,7 @@ class Endereco(View):
             perfil.user_perfil = perfils
             perfil.save()
 
-            return redirect('pedido:pagamento')
+            return redirect('pedido:pedido')
 
         else:
             return render(self.request,self.template_name,self.contexto)
@@ -35,11 +35,10 @@ class Endereco(View):
         perfils = Perfil_Usuario.objects.filter(user=user).first()
         perfil_endereco = Perfil_Endereco.objects.filter(user_perfil=perfils).exists()
         
-        print(perfils)
         if perfils == None or '':
             return redirect('usuario:cadastro')
 
         if perfil_endereco:
-           return redirect('pedido:pagamento')
+           return redirect('pedido:pedido')
 
         return render(self.request,self.template_name,self.contexto)
