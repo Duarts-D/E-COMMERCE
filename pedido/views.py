@@ -7,14 +7,20 @@ from produto.models import Produto
 from django.contrib import messages
 from utilidade.ultils import qtdcar,total_valoresp
 from django.views.generic import DetailView,ListView
+
+
 class Pedido_PD(View):
     template_name ='pedidos/pedido.html'
     
     def setup(self,request,*args,**kwargs):
         super().setup(request,*args,**kwargs)
 
+        self.user_on = self.request.user.is_authenticated
 
-        user = Perfil_Usuario.objects.get(user=self.request.user)
+        if not self.user_on:
+            return redirect('usuario:login')
+        user = Perfil_Usuario.objects.filter(user=self.request.user).first()
+        
         perfil_user = Perfil_Endereco.objects.get(user_perfil=user.id)
         
         
@@ -24,6 +30,9 @@ class Pedido_PD(View):
         }
 
     def get(self,*args,**kwargs):
+        if not self.user_on:
+            return redirect('usuario:login')
+        
         user = Perfil_Usuario.objects.filter(user=self.request.user).first()
         perfil_user = Perfil_Endereco.objects.filter(user_perfil=user.id).exists()
         
@@ -32,6 +41,7 @@ class Pedido_PD(View):
             return redirect('usuario:login')
         
         return render(self.request,self.template_name,self.contexto)
+
 
 class Salvar_pedido(View):
     template_name = 'pedidos/pedido.html'
@@ -117,20 +127,31 @@ class Salvar_pedido(View):
 
         return redirect('pedido:lista')
             # kwargs={'pk': pedido.pk}))
+
+
 class ListPedido(ListView):
     model = Pedido
     context_object_name = 'pedidos'
     template_name = 'pedidos/status_pedido.html'
     paginate_by = 4
     ordering = ['-id']
-
+    
     def get_queryset(self,*args,**kwargs):
         qs = super().get_queryset(*args,**kwargs)
         qs = qs.filter(user=self.request.user)
         return qs
-
+    def get(self,*args,**kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('usuario:login')
+        return super().get(*args,**kwargs)
+    
 class Detalhe(DetailView):
     model = Pedido
     context_object_name = 'produto'
     template_name = 'pedidos/detalhe_pedido.html'
     pk_url_kwarg = 'pk'
+    
+    def get(self,*args,**kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('usuario:login')
+        return super().get(*args,**kwargs)

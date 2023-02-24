@@ -6,11 +6,8 @@ from urllib.parse import urlparse
 import re
 
 class AdcCarrinho(View):
-
-
     def get(self,*args,**kwargs):
 
-     
         http_refere = self.request.META.get(
             'HTTP_REFERER',
             reverse('produto:produtos')
