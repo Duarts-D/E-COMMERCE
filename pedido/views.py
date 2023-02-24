@@ -102,8 +102,10 @@ class Salvar_pedido(View):
                 pedido=pedido,
                 produto=v['produto_nome'],
                 produto_id=v['produto_ids'],
-                preco=v['preco_total_unitario'],
-                preco_promo=v['preco_total_promo'],
+                preco_unitario=v['preco_unitario'],
+                preco_total_unitario=v['preco_total_unitario'],
+                preco_unitario_promo=v['preco_unitario_promo'],
+                preco_total_promo=v['preco_total_promo'],
                 quantidade=v['quantidade'],
                 imagem=v['imagem'],
                 slug=v['slug']

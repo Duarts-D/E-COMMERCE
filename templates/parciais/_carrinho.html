@@ -53,14 +53,14 @@
     </td>
 
     <td>
-        {% if itens.preco_unitario_promocional %}
-            {{ itens.preco_unitario_promocional |valores}}
+        {% if itens.preco_unitario_promo %}
+            {{ itens.preco_unitario_promo |valores}}
         {%else%}
-        {{itens.preco_unitario |valores}}
+           {{itens.preco_unitario |valores}}
         {% endif %}
     </td>
     
-    {% if itens.preco_unitario_promocional %}
+    {% if itens.preco_total_promo %}
         <td>{{itens.preco_total_promo|valores}}</td>
     {% else %}
         <td>{{ itens.preco_total_unitario|valores }}</td>

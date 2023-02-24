@@ -26,7 +26,7 @@
         <div class="table-responsive mt-3">
             <table class="table">
                 <tr>
-                    <th class="d-none d-lg-block">Imagem</th>
+                    <th>Imagem</th>
                     <th>Produto</th>
                     <th>Valor Unitario.</th>
                     <th>QTD.</th>
@@ -48,12 +48,19 @@
                 </a>      
             </td>
                     <td><a href="{% url 'produto:detalhe' linha.slug %}">{{ linha.produto}}</a></td>
-                    <td>{{ linha.preco|valores}}</td>
-                    <td>{{ linha.quantidade}}x </td>
+                    
                     {% if linha.preco_promo %}
-                        <td><b>{{ linha.preco_promo|valores}}</b></td>
+                    <td>{{ linha.preco_promo|valores}}</td>
+                    {%else%}
+                    <td>{{ linha.preco_unitario|valores}}</td>
+                    {%endif%}
+                    
+                    <td>{{ linha.quantidade}}x </td>
+
+                    {% if linha.preco_promo %}
+                        <td><b>{{ linha.preco_total_promo|valores}}</b></td>
                     {% else %}
-                        <td><b>{{ linha.preco|valores}}</b></td>
+                        <td><b>{{ linha.preco_total_unitario|valores}}</b></td>
                     {% endif %}
                 </tr>
                 {% endfor %}
