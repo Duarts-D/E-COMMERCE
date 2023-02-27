@@ -13,3 +13,6 @@ class Perfil_Usuario(models.Model):
     
     def __str__(self):
         return self.nome
+    class Meta:
+        verbose_name = 'Perfil Usuario'
+        verbose_name_plural = 'Perfils de Usuarios'

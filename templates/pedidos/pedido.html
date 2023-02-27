@@ -10,7 +10,7 @@
         <h2>Resumo da sua compra</h2>
 
         <p class="lead">Dados do usuário</p>
-        <p>Caso precise editar, <a href="#">Clique aqui</a></p>
+        <p>Caso precise editar, <a href="{% url 'usuario:atualizardados_gr' %}">Clique aqui</a></p>
         <dl class="row">
             <dt class="col-lg-2">Nome:</dt>
             <dd class="col-lg-4">{{ perfil_usuario.user_perfil.nome}}</dd>
@@ -29,7 +29,7 @@
         </dl>
 
         <p class="lead"><b>Dados de endereço</b></p>
-        <p>Caso precise editar, <a href="">Clique aqui</a></p>
+        <p>Caso precise editar, <a href="{% url 'enderecos:endereco_alterar'%}">Clique aqui</a></p>
         <dl class="row">
             <dt class="col-lg-2">Endereço:</dt>
             <dd class="col-lg-4">{{perfil_usuario.rua_avenida}}</dd>

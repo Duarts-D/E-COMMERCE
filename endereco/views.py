@@ -45,3 +45,32 @@ class Endereco(View):
            return redirect('pedido:pedido')
 
         return render(self.request,self.template_name,self.contexto)
+
+class EnderecoAlterar(View):
+    template_name = 'usuarios/atualizar_dados.html'
+    def setup(self,*args,**kwargs):
+        super().setup(*args,**kwargs)
+        self.perfil_usuario = Perfil_Usuario.objects.filter(user=self.request.user).first()
+        self.perfil_endereco = Perfil_Endereco.objects.filter(user_perfil=self.perfil_usuario).first()
+        self.contexto = {
+            'perfil_endereco': Perfil_EndercoForm(
+            data=self.request.POST or None,
+            instance=self.perfil_endereco
+            )
+        }
+        self.perfil_endereco = self.contexto['perfil_endereco']
+    def post(self,*args,**kwargs):
+        if self.perfil_endereco.is_valid():
+            if self.request.user.is_authenticated:
+                endereco = self.perfil_endereco.save(commit=False)
+                endereco.user_perfil = self.perfil_usuario
+                endereco.save()
+                return redirect('pedido:pedido')
+        print('falho o valid')
+        return render(self.request,self.template_name,self.contexto)
+   
+    def get(self,*args,**kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('usuario:login')
+        
+        return render(self.request,self.template_name,self.contexto)

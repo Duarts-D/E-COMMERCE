@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from usuario.models import Perfil_Usuario
 from django.core.validators import EmailValidator
+from utilidade.validador_cpf import valida_cpf
 
 import re
 
@@ -175,6 +176,10 @@ class PerfilForm(forms.ModelForm):
                     validation_error_msg['telefone'] = 'Favor digite somente numero "ex: 99 9 99999999".'
             
             if cpf_data:
+                if not valida_cpf(cpf_data):
+                    validation_error_msg['cpf'] = 'CPF invalido'
+
+            
                 if re.search(r'[^0-9\s]', cpf_data):
                     validation_error_msg['cpf'] = 'Favor digite somente numero "ex: 999.999.999-99".'
                 

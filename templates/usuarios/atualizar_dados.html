@@ -11,7 +11,7 @@
   
               <h3 class="mb-5">Atualizar Dados</h3>
 
-              <form method="POST" action="{% url 'usuario:atualizardados_gr' %}">
+              <form method="POST" action="">
                 {% csrf_token %}
               {% for field in perfilform.visible_fields%}
               <div class="form-outline mb-1">
@@ -33,7 +33,7 @@
               </div>
               {%endfor%}
 
-              {% for field in userform.visible_fields %}
+              {% for field in perfil_endereco.visible_fields %}
               <div class="form-outline mb-1">
                 <div class="form-outline mb-4">
                 
