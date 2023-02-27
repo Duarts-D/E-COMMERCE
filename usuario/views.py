@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
-from usuario.forms import PerfilForm
+from usuario.forms import PerfilForm,PasswordsForm
 from usuario.models import Perfil_Usuario
 from django.contrib import messages
 
@@ -39,18 +39,20 @@ class Cadastro(View):
     def setup(self, *args, **kwargs):
         super().setup( *args, **kwargs)
         
-        self.contexto = {'perfilform':PerfilForm(data=self.request.POST or None)}
+        self.contexto = {'perfilform':PerfilForm(data=self.request.POST or None),
+                         'senhaforms':PasswordsForm(data=self.request.POST or None)}
     
         self.perfilform = self.contexto['perfilform']
+        self.senhaforms = self.contexto['senhaforms']
 
 
     def post(self,request, *args, **kwargs):
-        if self.perfilform.is_valid():
+        if self.perfilform.is_valid() and self.senhaforms.is_valid():
             nome = self.perfilform.cleaned_data.get('nome')
             sobrenome  = self.perfilform.cleaned_data.get('sobrenome')
             email = self.perfilform.cleaned_data.get('email')
             cpf = self.perfilform.cleaned_data.get('cpf')
-            senha = self.perfilform.cleaned_data.get('senha')
+            senha = self.senhaforms.cleaned_data.get('password')
             
         
             user = User.objects.create_user(
@@ -71,6 +73,51 @@ class Cadastro(View):
             return render(self.request,self.template_name,self.contexto)
     
     def get(self, *args,**kwargs):
+        return render(self.request,self.template_name,self.contexto)
+
+class AtualizarDadosgr(View):
+    template_name = 'usuarios/atualizar_dados.html'
+
+
+    def setup(self, request, *args, **kwargs,):
+        super().setup(request, *args, **kwargs) 
+
+
+        if self.request.user.is_authenticated:
+            self.perfil = Perfil_Usuario.objects.filter(user=self.request.user).first()
+
+            self.contexto = {'perfilform': PerfilForm(
+                usuario=self.request.user,
+                data=self.request.POST or None,
+                instance=self.perfil),
+                }
+            
+            self.perfilform = self.contexto['perfilform']
+
+    def post(self,*args,**kwargs):
+        if self.perfilform.is_valid():
+            if self.request.user.is_authenticated:   
+
+                user = get_object_or_404(User,username=self.request.user.username)
+                user.username = self.perfilform.cleaned_data.get('cpf')
+                user.first_name = self.perfilform.cleaned_data.get('nome')
+                user.last_name = self.perfilform.cleaned_data.get('sobrenome')
+                user.email = self.perfilform.cleaned_data.get('email')
+                user.save()
+
+                perfil = self.perfilform.save(commit=False)
+                perfil.user = user
+                perfil.save()
+                print('atualizado')
+
+                return redirect('usuario:atualizardados_gr')
+        else:
+            return render(self.request,self.template_name,self.contexto)
+
+        
+
+
+    def get(self,*args,**kwargs):
         return render(self.request,self.template_name,self.contexto)
 
 class Logout(View):

@@ -13,8 +13,8 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">{{user.first_name}} {{user.last_name}}</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="{% url 'pedido:lista'%}">Meus pedidos</a></li>
-                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                        <li><a class="dropdown-item" href="{% url 'pedido:lista' %}">Meus pedidos</a></li>
+                        <li><a class="dropdown-item" href="{% url 'usuario:atualizardados_gr' %}">Minha conta</a></li>
                         <li><a class="dropdown-item" href="{% url 'usuario:logout' %}">Sair</a></li>
                     </ul>
                 </li>

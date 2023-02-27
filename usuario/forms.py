@@ -17,6 +17,16 @@ class PerfilForm(forms.ModelForm):
         fields = ('__all__')
         exclude = ('user',)
 
+
+    def __init__(self, usuario=None,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        
+        self.usuario = usuario
+        valor_inicial = kwargs.pop('valor_inicial', None)
+        super().__init__(*args, **kwargs)
+        if valor_inicial is not None:
+            self.fields['email'].initial = valor_inicial
+
     nome = forms.CharField(
         label='Nome',
         required=True,
@@ -74,24 +84,7 @@ class PerfilForm(forms.ModelForm):
             "phaceholder":"Digite os 11 digito sem pontuação"}
         )
     )
-    senha = forms.CharField(        
-        label='Senha',
-        required=True,
-        max_length=100,
-        widget=forms.PasswordInput(
-            attrs={"class":"form-control form-control-lg",
-            "phaceholder":"Senha"}
-        )
-    )
-    senha2 = forms.CharField(        
-        label='Repetir senha',
-        required=True,
-        max_length=100,
-        widget=forms.PasswordInput(
-            attrs={"class":"form-control form-control-lg",
-            "phaceholder":"Digite novamente"}
-        )
-    )
+
 
     def clean(self,*args,**kwargs):
         data = self.data
@@ -104,16 +97,26 @@ class PerfilForm(forms.ModelForm):
         email_data = cleaned.get('email')
         telefone_data = cleaned.get('telefone')
         cpf_data = cleaned.get('cpf')
-        senha_data = cleaned.get('senha')
-        senha2_data = cleaned.get('senha2')
+
 
 
         msg_error_crct_especiais = 'Campo nao pode conter caracters especais'
         msg_error_espaços_vazio = 'Campo nao pode ter espaços'
 
-        user = User.objects.filter(username=cpf_data).first()
-        email = User.objects.filter(email=email_data).first()
+        user = User.objects.filter(username=self.usuario).first()
+        perfil_email = Perfil_Usuario.objects.filter(email=email_data).first()
 
+        cpf_enviado = Perfil_Usuario.objects.filter(cpf=cpf_data).first()
+
+        if self.usuario:
+            if perfil_email:
+                    if perfil_email is not None and perfil_email.user.pk != user.pk:
+                        validation_error_msg['email'] = 'Email ja utilizado'
+                 
+            if cpf_enviado:
+                if cpf_enviado is not None and cpf_enviado.user.pk != user.pk:
+                        validation_error_msg['cpf'] = 'Cpf ja utilizado'
+            
         if nome_data:
             nome_data = nome_data.title()
             cleaned['nome'] = nome_data
@@ -122,69 +125,108 @@ class PerfilForm(forms.ModelForm):
                 validation_error_msg['nome'] = msg_error_crct_especiais
 
             if any( x.isdigit() for x in nome_data):
-                validation_error_msg['nome'] = 'Nome nao pode conter numeros.'
+                validation_error_msg['nome'] = 'Nome nao pode conter numeros.'         
+
+                    
+            if sobrenome_data:
+                sobrenome_data = sobrenome_data.title()
+                cleaned['sobrenome'] = sobrenome_data
                 
-        if sobrenome_data:
-            sobrenome_data = sobrenome_data.title()
-            cleaned['sobrenome'] = sobrenome_data
-            
-            if re.search(r'[^a-zA-Z0-9\s]', sobrenome_data):
-                validation_error_msg['sobrenome'] = msg_error_crct_especiais
+                if re.search(r'[^a-zA-Z0-9\s]', sobrenome_data):
+                    validation_error_msg['sobrenome'] = msg_error_crct_especiais
 
-            if any( x.isdigit() for x in sobrenome_data):
-                validation_error_msg['sobrenome'] = 'Sobrenome nao pode conter numeros.'
+                if any( x.isdigit() for x in sobrenome_data):
+                    validation_error_msg['sobrenome'] = 'Sobrenome nao pode conter numeros.'
+            
+            if data_de_nascimento_data:
+                if re.search(r'[^a-zA-Z0-9\s]', data_de_nascimento_data):
+                    validation_error_msg['data_de_nascimento'] = msg_error_crct_especiais
+                
+                if len(data_de_nascimento_data)<8:
+                    validation_error_msg['data_de_nascimento'] = 'Data de nacimento incompleta'
+
+                if ' ' in data_de_nascimento_data:
+                    validation_error_msg['data_de_nascimento'] = msg_error_espaços_vazio
+
+                if any( x.isalpha() for x in data_de_nascimento_data):
+                    validation_error_msg['data_de_nascimento'] = 'Favor digite somente numero "ex: 08031994".'
+            
+            if email_data:
+                email_data = email_data.lower()
+                cleaned['email'] = email_data
+
+
+                if ' ' in email_data:
+                    validation_error_msg = msg_error_espaços_vazio
+                
+                if not self.usuario:
+                    if perfil_email:
+                        validation_error_msg['email'] = 'Email já utilizado.'
+
+
+            if telefone_data:
+                if len(telefone_data) < 11:
+                    validation_error_msg['telefone'] = 'Numero de telefone incompleto'
+
+                if ' ' in telefone_data:
+                    validation_error_msg['telefone']= msg_error_espaços_vazio            
+                
+                if re.search(r'[^0-9\s]', telefone_data):
+                    validation_error_msg['telefone'] = 'Favor digite somente numero "ex: 99 9 99999999".'
+            
+            if cpf_data:
+                if re.search(r'[^0-9\s]', cpf_data):
+                    validation_error_msg['cpf'] = 'Favor digite somente numero "ex: 999.999.999-99".'
+                
+                if len (cpf_data) < 11:
+                    validation_error_msg['cpf'] = 'CPF incompleto.'
+
+                if ' ' in cpf_data:
+                    validation_error_msg['cpf'] = 'CPF nao pode conter espaços vazios.'
+                
+                #TODO colocar validador de pcf : 
+                #    
+                if not self.usuario:  
+                    if cpf_enviado:
+                        print('oi')
+                        validation_error_msg['cpf'] = 'CPF Já utilizadoooo.'
+            
+        if validation_error_msg:
+            raise(forms.ValidationError(validation_error_msg))                    
+
+        return cleaned
+    
+class PasswordsForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('password','password2')
+    password = forms.CharField(        
+        label='Senha',
+        required=False,
+        max_length=100,
+        widget=forms.PasswordInput(
+            attrs={"class":"form-control form-control-lg",
+            "phaceholder":"Senha"}
+        )
+    )
+    password2 = forms.CharField(        
+        label='Repetir senha',
+        required=False,
+        max_length=100,
+        widget=forms.PasswordInput(
+            attrs={"class":"form-control form-control-lg",
+            "phaceholder":"Digite novamente"}
+        )
+    )   
+
+    def clean(self):
+        cleaned = self.cleaned_data
+        validation_error_msg = {}
+        senha_data = cleaned.get('senha')
+        senha2_data = cleaned.get('senha2')
+
+        msg_error_espaços_vazio = 'Nao pode conter espaços vazios'
         
-        if data_de_nascimento_data:
-            if re.search(r'[^a-zA-Z0-9\s]', data_de_nascimento_data):
-                validation_error_msg['data_de_nascimento'] = msg_error_crct_especiais
-            
-            if len(data_de_nascimento_data)<8:
-                validation_error_msg['data_de_nascimento'] = 'Data de nacimento incompleta'
-
-            if ' ' in data_de_nascimento_data:
-                validation_error_msg['data_de_nascimento'] = msg_error_espaços_vazio
-
-            if any( x.isalpha() for x in data_de_nascimento_data):
-                validation_error_msg['data_de_nascimento'] = 'Favor digite somente numero "ex: 08031994".'
-        
-        if email_data:
-            email_data = email_data.lower()
-            cleaned['email'] = email_data
-            if email:
-                validation_error_msg['email'] = 'Email já utilizado.'
-            if ' ' in email_data:
-                validation_error_msg = msg_error_espaços_vazio
-
-
-
-        if telefone_data:
-            if len(telefone_data) < 11:
-                validation_error_msg['telefone'] = 'Numero de telefone incompleto'
-
-            if ' ' in telefone_data:
-                validation_error_msg['telefone']= msg_error_espaços_vazio            
-            
-            if re.search(r'[^0-9\s]', telefone_data):
-                validation_error_msg['telefone'] = 'Favor digite somente numero "ex: 99 9 99999999".'
-        
-        if cpf_data:
-            if re.search(r'[^0-9\s]', cpf_data):
-                validation_error_msg['cpf'] = 'Favor digite somente numero "ex: 999.999.999-99".'
-            
-            if len (cpf_data) < 11:
-                validation_error_msg['cpf'] = 'CPF incompleto.'
-
-            if ' ' in cpf_data:
-                validation_error_msg['cpf'] = 'CPF nao pode conter espaços vazios.'
-            
-            #TODO colocar validador de pcf : 
-            #    
-            
-            if user:
-                validation_error_msg['cpf'] = 'CPF Já utilizado.'
-            
-
-
         if senha_data:
             if len(senha_data) < 8:
                 validation_error_msg['senha'] = 'Senha muito curta, precisa ter mais de "8 digitos/letras".'
@@ -200,14 +242,12 @@ class PerfilForm(forms.ModelForm):
 
             if not (x.isdigit() for x in senha_data ):
                 validation_error_msg['senha'] = 'Senha dever conter 1 numero.'
-        
+    
         if senha2_data and senha_data:
             if senha2_data != senha_data:
                 validation_error_msg['senha2'] = 'Senha nao sao iguais.'
 
         if validation_error_msg:
-            raise(forms.ValidationError(validation_error_msg))        
-
+            raise(forms.ValidationError(validation_error_msg))
         
         return cleaned
-        
