@@ -1,11 +1,13 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views import View
 from produto.models import Produto
 from django.core.paginator import Paginator
+from django.db.models import Q,Case,When
+from django.contrib import messages
 
-class Produtos(ListView):
+class ProdutosView(ListView):
     model = Produto
     template_name = 'produtos/produtos.html'
     context_object_name = 'produtos'
@@ -17,7 +19,7 @@ class Produtos(ListView):
         qs = qs.filter(publico=True)
         return qs
         
-class Detalhe(DetailView):
+class DetalheView(DetailView):
     model = Produto
     template_name = 'produtos/detalhe_produto.html'
     context_object_name = 'detalhe'
@@ -39,3 +41,26 @@ class Detalhe(DetailView):
 
         
         return contexto
+
+class BuscarView(ProdutosView):
+    template_name = 'produtos/produtos.html'
+    
+
+    def get_queryset(self) :
+        qs = super().get_queryset()
+        busca = self.request.GET.get('buscar')
+
+        if busca is None or not busca:
+            return qs
+        qs = qs.filter(
+            Q(categoria__exact=busca)|
+            Q(nome__icontains=busca)|
+            Q(descricao_longa__icontains=busca)
+        )
+        return qs
+
+    def get(self,*args,**kwargs):
+        get = super().get(*args,**kwargs)
+        if not self.request.GET.get('buscar'):
+            return redirect('produto:produtos')
+        return get
