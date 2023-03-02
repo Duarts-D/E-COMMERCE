@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-
+from categoria.models import Categoria
 # Create your models here.
 class Produto(models.Model):
     CATEGORIAS = (
@@ -24,6 +24,7 @@ class Produto(models.Model):
     publico = models.BooleanField(default=False)
     slug = models.SlugField(unique=True,blank=True)
     categoria = models.CharField(max_length=3,choices=CATEGORIAS,default='CPU')
+
     objects = models.Manager()
 
     def save(self,*args, **kwargs):

@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from usuario.models import Perfil_Usuario
 from django.core.validators import EmailValidator
 from utilidade.validador_cpf import valida_cpf
-
+from utilidade.validators.validators import caract_especiais_validador,string_validador,tamanho_len_validador
+from utilidade.validators.validators import espaços_vazio_validador,digitos_validador
 import re
 
 
@@ -122,10 +123,10 @@ class PerfilForm(forms.ModelForm):
             nome_data = nome_data.title()
             cleaned['nome'] = nome_data
             
-            if re.search(r'[^a-zA-Z0-9\s]', nome_data):
+            if caract_especiais_validador(nome_data):
                 validation_error_msg['nome'] = msg_error_crct_especiais
 
-            if any( x.isdigit() for x in nome_data):
+            if string_validador(nome_data):
                 validation_error_msg['nome'] = 'Nome nao pode conter numeros.'         
 
                     
@@ -133,23 +134,21 @@ class PerfilForm(forms.ModelForm):
                 sobrenome_data = sobrenome_data.title()
                 cleaned['sobrenome'] = sobrenome_data
                 
-                if re.search(r'[^a-zA-Z0-9\s]', sobrenome_data):
+                if caract_especiais_validador(sobrenome_data):
                     validation_error_msg['sobrenome'] = msg_error_crct_especiais
 
-                if any( x.isdigit() for x in sobrenome_data):
+                if string_validador(sobrenome_data):
                     validation_error_msg['sobrenome'] = 'Sobrenome nao pode conter numeros.'
             
             if data_de_nascimento_data:
-                if re.search(r'[^a-zA-Z0-9\s]', data_de_nascimento_data):
-                    validation_error_msg['data_de_nascimento'] = msg_error_crct_especiais
-                
-                if len(data_de_nascimento_data)<8:
+
+                if tamanho_len_validador(data_de_nascimento_data,8):
                     validation_error_msg['data_de_nascimento'] = 'Data de nacimento incompleta'
 
-                if ' ' in data_de_nascimento_data:
+                if espaços_vazio_validador(data_de_nascimento_data):
                     validation_error_msg['data_de_nascimento'] = msg_error_espaços_vazio
 
-                if any( x.isalpha() for x in data_de_nascimento_data):
+                if digitos_validador(data_de_nascimento_data):
                     validation_error_msg['data_de_nascimento'] = 'Favor digite somente numero "ex: 08031994".'
             
             if email_data:
@@ -157,7 +156,7 @@ class PerfilForm(forms.ModelForm):
                 cleaned['email'] = email_data
 
 
-                if ' ' in email_data:
+                if espaços_vazio_validador(email_data):
                     validation_error_msg = msg_error_espaços_vazio
                 
                 if not self.usuario:
@@ -166,34 +165,34 @@ class PerfilForm(forms.ModelForm):
 
 
             if telefone_data:
-                if len(telefone_data) < 11:
+                
+                if tamanho_len_validador(telefone_data,11):
                     validation_error_msg['telefone'] = 'Numero de telefone incompleto'
 
-                if ' ' in telefone_data:
+                if espaços_vazio_validador(telefone_data):
                     validation_error_msg['telefone']= msg_error_espaços_vazio            
                 
-                if re.search(r'[^0-9\s]', telefone_data):
+                if digitos_validador(telefone_data):
                     validation_error_msg['telefone'] = 'Favor digite somente numero "ex: 99 9 99999999".'
-            
+                
             if cpf_data:
                 if not valida_cpf(cpf_data):
                     validation_error_msg['cpf'] = 'CPF invalido'
 
             
-                if re.search(r'[^0-9\s]', cpf_data):
+                if digitos_validador(cpf_data):
                     validation_error_msg['cpf'] = 'Favor digite somente numero "ex: 999.999.999-99".'
                 
-                if len (cpf_data) < 11:
+                if tamanho_len_validador(cpf_data,11):
                     validation_error_msg['cpf'] = 'CPF incompleto.'
 
-                if ' ' in cpf_data:
+                if espaços_vazio_validador(cpf_data):
                     validation_error_msg['cpf'] = 'CPF nao pode conter espaços vazios.'
                 
                 #TODO colocar validador de pcf : 
                 #    
                 if not self.usuario:  
                     if cpf_enviado:
-                        print('oi')
                         validation_error_msg['cpf'] = 'CPF Já utilizadoooo.'
             
         if validation_error_msg:

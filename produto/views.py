@@ -4,8 +4,9 @@ from django.views.generic.detail import DetailView
 from django.views import View
 from produto.models import Produto
 from django.core.paginator import Paginator
-from django.db.models import Q,Case,When
-from django.contrib import messages
+from django.db.models import Q,Value
+from django.db.models.functions import Concat
+
 
 class ProdutosView(ListView):
     model = Produto
@@ -49,13 +50,16 @@ class BuscarView(ProdutosView):
     def get_queryset(self) :
         qs = super().get_queryset()
         busca = self.request.GET.get('buscar')
-
+        info_busca = Concat('nome', Value(' '), 'categoria')
         if busca is None or not busca:
             return qs
-        qs = qs.filter(
-            Q(categoria__exact=busca)|
+        qs = qs.annotate(
+            nome_categoria = info_busca
+        ).filter(
+            Q(nome_categoria__icontains=busca)|
             Q(nome__icontains=busca)|
-            Q(descricao_longa__icontains=busca)
+            Q(descricao_longa__icontains=busca)|
+            Q(slug__icontains=busca)
         )
         return qs
 

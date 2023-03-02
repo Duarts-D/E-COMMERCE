@@ -1,7 +1,8 @@
 from django import forms
 from endereco.models import Perfil_Endereco
 from endereco.choices import ESTADO,LOCAL
-
+from utilidade.validators.validators import digitos_validador,espaços_vazio_validador,tamanho_len_validador
+from utilidade.validators.validators import string_validador,caract_especiais_validador
 import re
 
 class Perfil_EndercoForm(forms.ModelForm):
@@ -140,29 +141,27 @@ class Perfil_EndercoForm(forms.ModelForm):
             nome_completo_data = nome_completo_data.title()
             cleaned['nome_completo'] = nome_completo_data
             
-            if re.search(r'[^a-zA-Z0-9\s]', nome_completo_data):
+            if caract_especiais_validador(nome_completo_data):
                 validation_error_msg['nome_completo'] = msg_error_crct_especiais
 
-            if any( x.isdigit() for x in nome_completo_data):
+            if string_validador(nome_completo_data):
                 validation_error_msg['nome_completo'] = 'Nome nao pode conter numeros.'         
 
         if cep_data:
-            if re.search(r'[^0-9\s]', cep_data):
+            if digitos_validador(cep_data):
                 validation_error_msg['cep'] = 'Favor digite somente numero "ex: 999.999.999-99".'
             
-            if len (cep_data) < 8:
+            if tamanho_len_validador(cep_data,8):
                 validation_error_msg['cep'] = 'Cep incompleto.'
 
-            if ' ' in cep_data:
+            if espaços_vazio_validador(cep_data):
                 validation_error_msg['cep'] = 'CPF nao pode conter espaços vazios.'
 
         if cidade_data:
             cidade_data = cidade_data.title()
             cleaned['cidade'] = cidade_data
-            if re.search(r'[^a-zA-Z0-9\s]', cidade_data):
-                validation_error_msg['cidade'] = msg_error_crct_especiais
-
-            if any( x.isdigit() for x in cidade_data):
+            
+            if digitos_validador(cidade_data):
                 validation_error_msg['cidade'] = 'Nome nao pode conter numeros.'         
                 
         if complemento_data:
@@ -170,12 +169,14 @@ class Perfil_EndercoForm(forms.ModelForm):
             cleaned['complemento'] = complemento_data
         
         if telefone_data:
-            if re.search(r'[^0-9]', telefone_data):
+
+            if digitos_validador(telefone_data):
                 validation_error_msg['telefone'] = 'Favor insira somente numeros'
-            if len(telefone_data) < 11:
+            
+            if tamanho_len_validador(telefone_data,11):
                 validation_error_msg['telefone'] = 'Numero de telefone incompleto'
 
-            if ' ' in telefone_data:
+            if espaços_vazio_validador(telefone_data):
                 validation_error_msg['telefone']= msg_error_espaços_vazio            
                 
         if validation_error_msg:
