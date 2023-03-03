@@ -1,11 +1,14 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
-from usuario.forms import PerfilForm,PasswordsForm
+from usuario.forms import PerfilForm,PasswordsForm,AlterarSenhaForm
 from usuario.models import Perfil_Usuario
 from django.contrib import messages
-
+from django.core.mail import send_mail
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 class Login(View):
     template_name = 'usuarios/login.html'
 
@@ -54,7 +57,7 @@ class Cadastro(View):
             cpf = self.perfilform.cleaned_data.get('cpf')
             senha = self.senhaforms.cleaned_data.get('password')
             
-        
+            print(senha)
             user = User.objects.create_user(
                 username=cpf,
                 email=email,
@@ -125,3 +128,23 @@ class Logout(View):
         logout(self.request)
         messages.success(self.request,'Deslogado com sucesso')
         return redirect('produto:produtos')
+
+class AtualizarSenhaview(PasswordChangeView):
+    
+    form_class = AlterarSenhaForm
+    success_url = reverse_lazy('usuario:atualizacao_concluida')
+
+def senha_sucesso (request):
+    return render(request,'usuarios/senha_sucesso.html')
+
+# class ResetPasswordView(View):
+#     template_name = 'usuarios/recuperar_senha.html'
+#     def get(self,*args,**kwargs):
+#         email = self.request.GET.get('email')
+#         if email:
+#             send_mail('RECUPERAÇAO DE SENHA',
+#                       'Utilize esse link para reseta sua senha',
+#                       '',[email],
+#                       )
+#             return redirect('usuario:login')
+#         return render(self.request,self.template_name)

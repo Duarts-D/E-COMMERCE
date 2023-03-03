@@ -47,7 +47,7 @@ class Endereco(View):
         return render(self.request,self.template_name,self.contexto)
 
 class EnderecoAlterar(View):
-    template_name = 'usuarios/atualizar_dados.html'
+    template_name = 'endereco/atualizar_endereco.html'
     def setup(self,*args,**kwargs):
         super().setup(*args,**kwargs)
         self.perfil_usuario = Perfil_Usuario.objects.filter(user=self.request.user).first()

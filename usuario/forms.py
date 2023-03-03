@@ -4,14 +4,73 @@ from usuario.models import Perfil_Usuario
 from django.core.validators import EmailValidator
 from utilidade.validador_cpf import valida_cpf
 from utilidade.validators.validators import caract_especiais_validador,string_validador,tamanho_len_validador
-from utilidade.validators.validators import espaços_vazio_validador,digitos_validador
-import re
+from utilidade.validators.validators import (espaços_vazio_validador,
+                                             digitos_validador,
+                                             string_uma_maiscula_validador,
+                                             string_uma_inuscula_validador)
+from django.contrib.auth.forms import PasswordChangeForm
 
 
-class UserForm(forms.ModelForm):
+
+class AlterarSenhaForm(PasswordChangeForm):
+
+    old_password = forms.CharField(        
+        label='Senha Antiga',
+        max_length=100,
+        widget=forms.PasswordInput(
+            attrs={"class":"form-control form-control-lg",
+            "phaceholder":"Senha",
+            'type':'password'}
+        )
+    )
+    new_password1 = forms.CharField(        
+        label='Senha Nova',
+        max_length=100,
+        widget=forms.PasswordInput(
+            attrs={"class":"form-control form-control-lg",
+            "phaceholder":"Senha Nova",
+            'type':'password'}
+        )
+    )
+    new_password2 = forms.CharField(        
+        label='Repetir Senha',
+        max_length=100,
+        widget=forms.PasswordInput(
+            attrs={"class":"form-control form-control-lg",
+            "phaceholder":"Digite Novamente",
+            'type':'password'}
+        )
+    )
     class Meta:
         model = User
-        fields = ('username','first_name','last_name','password','email',)
+        fields = ('old_password','new_password1','new_password2')
+
+    
+    def clean(self):
+        cleaned = self.cleaned_data
+        validation_error_msg = {}
+        password2 = cleaned.get('new_password2')
+        
+        print(password2)
+        msg_error_espaços_vazio = 'Nao pode conter espaços vazios'
+
+        if password2:
+            if espaços_vazio_validador(password2):
+                validation_error_msg['new_password2'] = msg_error_espaços_vazio
+            
+            if not string_uma_maiscula_validador(password2):
+                validation_error_msg['new_password2'] = 'Senha dever conter "1 Letra Maisculo".'
+
+            if not string_uma_inuscula_validador(password2):
+                validation_error_msg['new_password2'] = 'Senha dever conter "1 Letra Minuscula".'
+
+            if not digitos_validador(password2):
+                validation_error_msg['new_password2'] = 'Senha dever conter 1 numero.'        
+        
+        if validation_error_msg:
+                raise(forms.ValidationError(validation_error_msg))
+        
+        return cleaned
 
 class PerfilForm(forms.ModelForm):
     class Meta:
@@ -204,6 +263,7 @@ class PasswordsForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('password','password2')
+
     password = forms.CharField(        
         label='Senha',
         required=False,
@@ -226,32 +286,40 @@ class PasswordsForm(forms.ModelForm):
     def clean(self):
         cleaned = self.cleaned_data
         validation_error_msg = {}
-        senha_data = cleaned.get('senha')
-        senha2_data = cleaned.get('senha2')
+        senha_data = cleaned.get('password')
+        senha2_data = cleaned.get('password2')
 
         msg_error_espaços_vazio = 'Nao pode conter espaços vazios'
         
+            
         if senha_data:
             if len(senha_data) < 8:
-                validation_error_msg['senha'] = 'Senha muito curta, precisa ter mais de "8 digitos/letras".'
+                validation_error_msg['password2'] = 'Senha muito curta, precisa ter mais de "8 digitos/letras".'
 
             if ' ' in senha_data:
-                validation_error_msg['senha'] = msg_error_espaços_vazio
+                validation_error_msg['password2'] = msg_error_espaços_vazio
             
             if not any(x.isupper() for x  in senha_data ):
-                validation_error_msg['senha'] = 'Senha dever conter "1 Letra Maisculo".'
+                validation_error_msg['password2'] = 'Senha dever conter "1 Letra Maisculo".'
 
             if not any(x.islower() for x in senha_data ):
-                validation_error_msg['senha'] = 'Senha dever conter "1 Letra Minuscula".'
+                validation_error_msg['password2'] = 'Senha dever conter "1 Letra Minuscula".'
 
             if not (x.isdigit() for x in senha_data ):
-                validation_error_msg['senha'] = 'Senha dever conter 1 numero.'
+                validation_error_msg['password2'] = 'Senha dever conter 1 numero.'
     
         if senha2_data and senha_data:
             if senha2_data != senha_data:
-                validation_error_msg['senha2'] = 'Senha nao sao iguais.'
+                validation_error_msg['password2'] = 'Senha nao sao iguais.'
+
+
+        if not senha_data:
+            validation_error_msg['password'] = 'Campos nao pode fica vazio'
+        if not senha2_data:
+            validation_error_msg['password2'] = 'Campos nao pode fica vazio'         
 
         if validation_error_msg:
             raise(forms.ValidationError(validation_error_msg))
-        
+
         return cleaned
+    

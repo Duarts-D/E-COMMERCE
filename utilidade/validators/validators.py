@@ -14,3 +14,9 @@ def espaços_vazio_validador(valor):
 
 def digitos_validador(valor):
     return re.search(r'[^0-9\s]', valor)
+
+def string_uma_maiscula_validador(valor):
+    return any(x.isupper() for x  in valor )
+
+def string_uma_inuscula_validador(valor):
+    return any(x.islower() for x in valor )
