@@ -18,5 +18,5 @@ def digitos_validador(valor):
 def string_uma_maiscula_validador(valor):
     return any(x.isupper() for x  in valor )
 
-def string_uma_inuscula_validador(valor):
+def string_uma_minuscula_validador(valor):
     return any(x.islower() for x in valor )

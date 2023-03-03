@@ -3,11 +3,11 @@ from django.views import View
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
-from usuario.forms import PerfilForm,PasswordsForm,AlterarSenhaForm
+from usuario.forms import PerfilForm,PasswordsForm,AlterarSenhaForm,SenhaEmailResetForm,SenhaResetConfirmForm
 from usuario.models import Perfil_Usuario
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeView,PasswordResetView,PasswordResetConfirmView
 from django.urls import reverse_lazy
 class Login(View):
     template_name = 'usuarios/login.html'
@@ -134,8 +134,22 @@ class AtualizarSenhaview(PasswordChangeView):
     form_class = AlterarSenhaForm
     success_url = reverse_lazy('usuario:atualizacao_concluida')
 
-def senha_sucesso (request):
+def senha_sucesso(request):
     return render(request,'usuarios/senha_sucesso.html')
+
+class RecuperarSenhaView(PasswordResetView):
+    form_class = SenhaEmailResetForm
+    email_template_name = 'usuarios/resetar_senha/senha_reset_email.html'
+    success_url = reverse_lazy('usuario:recuperar_senha_enviado')
+
+def recuperar_senha_enviado(request):
+    return render(request,'usuarios/resetar_senha/senha_reset_enviada.html')
+
+class RecuperarSenhaConfirmView(PasswordResetConfirmView):
+    form_class = SenhaResetConfirmForm
+    success_url = reverse_lazy('usuario:password_reset_complete')
+
+pass  
 
 # class ResetPasswordView(View):
 #     template_name = 'usuarios/recuperar_senha.html'

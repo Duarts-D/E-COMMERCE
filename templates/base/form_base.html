@@ -1,0 +1,40 @@
+{% extends 'base/base.html' %}
+
+{% block head %}{%endblock%}
+
+{%block conteudo%}
+
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+        <div class="card-body p-5 text-center">
+            
+            {% block titulo %}
+            <h3 class="mb-5">Atualizar Dados</h3>
+            {%endblock%}
+
+            <form method="POST" action="">
+                
+                {% csrf_token %}
+                
+                {%block formulario %}
+                {%endblock%}
+                
+                {%block botton %}
+                {% comment %} <button class="btn btn-primary btn-lg btn-block" type="submit">Atualizar</button>
+                <a href="{% url 'usuario:atualizar_senha' %}" class="btn btn-primary btn-lg btn-block"> Alterar Senha</a> {% endcomment %}
+                {% endblock%}
+        
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+{% block footer %}
+<footer class="footer bg-dark py-5 bottom mt-4">
+{%endblock%}
+  {% endblock%}

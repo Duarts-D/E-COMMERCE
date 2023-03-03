@@ -1,5 +1,12 @@
-{% extends 'usuaros/resetar_senha/senha_reset_form.html' %}
+{% extends 'parciais/_sucesso_card_messages.html'%}
 
-{%block formulario %} {% endblock %}
 
-<h1>Você deve receber o e-mail em breve<h1>
+
+
+{% block sucesso %}
+<a href="{% url 'usuario:login' %}" class="btn btn-outline-dark">    
+    <h1>Você deve receber o email em breve.</h1>
+        <p>Contedo as informacoes necessaria.</p>
+        <p>clique aqui para voltar.</p> 
+</a>
+{%endblock%}
