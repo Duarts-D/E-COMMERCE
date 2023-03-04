@@ -1,64 +1,31 @@
-{% extends 'base/base.html' %}
+{% extends 'base/form_base.html' %}
 
-{% load crispy_forms_tags %}
-
-{% block head %}{%endblock%}
-{%block conteudo%}
-
-    <div class="container py-5 h-100">
-      <div class="row d-flex justify-content-center align-items-center h-100">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card shadow-2-strong" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center">
+{% block titulo %}
+  <h3 class="mb-5">Criar conta</h3>
   
-              <h3 class="mb-5">Criar conta</h3>
+{%endblock%}
 
-              <form method="POST" action="">
-                {% csrf_token %}
-              {% for field in perfilform.visible_fields%}
-              <div class="form-outline mb-1">
-                <div class="form-outline mb-4">
-                
-                <label  for="{{field.id_for_label}}">{{field.label}}</label>
-                {{ field }}
-                
-                {% for error in field.errors %}
-                
-                <div class="alert alert-danger">
-                    {{error}}
-                </div>
-                {%endfor%}
-              </div>
-              </div>
-              {%endfor%}
-              {% for field in senhaforms.visible_fields%}
-              <div class="form-outline mb-1">
-                <div class="form-outline mb-4">
-                
-                <label  for="{{field.id_for_label}}">{{field.label}}</label>
-                {{ field }}
-                
-                {% for error in field.errors %}
-                
-                <div class="alert alert-danger">
-                    {{error}}
-                </div>
-                {%endfor%}
-              </div>
-              </div>
-              {%endfor%}
-              <button class="btn btn-primary btn-lg btn-block" type="submit">Criar</button>
-            </form>
+{% block formulario %}
 
-              <div>
-              <p class="mb-5 pb-lg-2" style="color: #393f81;">Ja possui cadastro? <a href="{% url 'usuario:login' %}"
-                  style="color: #393f81;">ENTRAR</a></p>
-              <hr class="my-4">
-              </div>
+  {% for field in perfilform.visible_fields%}
+  {% include 'parciais/_formulario_padrao.html'%}
+  {% endfor %}
+  {% for field in senhaforms.visible_fields%}
+  {% include 'parciais/_formulario_padrao.html'%}
+  {% endfor %}
 
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  {% endblock%}
+{% endblock %}
+
+{%block botton %}
+<button class="btn btn-primary btn-lg btn-block" type="submit">Criar</button>
+
+<div>
+  <p class="mb-5 pb-lg-2" style="color: #393f81;">Ja possui cadastro? <a href="{% url 'usuario:login' %}"
+      style="color: #393f81;">ENTRAR</a></p>
+  <hr class="my-4">
+</div>
+{% endblock%}
+
+
+
+

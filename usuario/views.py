@@ -9,7 +9,8 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.contrib.auth.views import PasswordChangeView,PasswordResetView,PasswordResetConfirmView
 from django.urls import reverse_lazy
-class Login(View):
+
+class LoginView(View):
     template_name = 'usuarios/login.html'
 
     def post(self,*args,**kwargs):
@@ -36,7 +37,7 @@ class Login(View):
     def get(self, *args,**kwargs):
         return render(self.request,self.template_name)
 
-class Cadastro(View):
+class CadastroView(View):
     template_name = 'usuarios/cadastro.html'
 
     def setup(self, *args, **kwargs):
@@ -78,9 +79,8 @@ class Cadastro(View):
     def get(self, *args,**kwargs):
         return render(self.request,self.template_name,self.contexto)
 
-class AtualizarDadosgr(View):
-    template_name = 'usuarios/atualizar_dados.html'
-
+class AtualizarDadosgrView(View):
+    template_name = 'usuarios/atualizar_dados/atualizar_dados.html'
 
     def setup(self, request, *args, **kwargs,):
         super().setup(request, *args, **kwargs) 
@@ -112,8 +112,8 @@ class AtualizarDadosgr(View):
                 perfil.user = user
                 perfil.save()
                 print('atualizado')
-
-                return redirect('usuario:atualizardados_gr')
+                return redirect('usuario:atualizacao_concluida')
+                
         else:
             return render(self.request,self.template_name,self.contexto)
 
@@ -130,26 +130,31 @@ class Logout(View):
         return redirect('produto:produtos')
 
 class AtualizarSenhaview(PasswordChangeView):
-    
+    template_name='usuarios/atualizar_dados/atualizar_senha.html'
     form_class = AlterarSenhaForm
     success_url = reverse_lazy('usuario:atualizacao_concluida')
 
 def senha_sucesso(request):
-    return render(request,'usuarios/senha_sucesso.html')
+    return render(request,'usuarios/atualizar_dados/senha_sucesso.html')
 
 class RecuperarSenhaView(PasswordResetView):
+    template_name = 'usuarios/resetar_senha/senha_reset_form.html'
     form_class = SenhaEmailResetForm
     email_template_name = 'usuarios/resetar_senha/senha_reset_email.html'
     success_url = reverse_lazy('usuario:recuperar_senha_enviado')
 
-def recuperar_senha_enviado(request):
+def recuperarsenha_enviado(request):
     return render(request,'usuarios/resetar_senha/senha_reset_enviada.html')
 
 class RecuperarSenhaConfirmView(PasswordResetConfirmView):
+    template_name='usuarios/resetar_senha/senha_reset_confirma.html'
     form_class = SenhaResetConfirmForm
     success_url = reverse_lazy('usuario:password_reset_complete')
 
-pass  
+def recuperarsenhaconfirm_completo(request):
+    return render(request,'usuarios/resetar_senha/senha_reset_completo.html')
+
+
 
 # class ResetPasswordView(View):
 #     template_name = 'usuarios/recuperar_senha.html'

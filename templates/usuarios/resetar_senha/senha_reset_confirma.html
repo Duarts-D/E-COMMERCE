@@ -1,8 +1,19 @@
 {% extends 'base/form_base.html' %}
 
-{% block titulo %}
-  <h3 class="mb-5">Confirmar redefinição de senha?</h3>
-  <p>Insira sua nova senha</p>
+
+
+
+{%block titulo %}
+
+  {% if validlink %}
+    <h3 class="mb-5">Confirmar redefinição de senha??</h3>
+    <p>Insira sua nova senha</p>
+  {%else%}
+    <a href="{% url 'usuario:reset_password' %}" class="btn ">
+      <h3 class="mb-5">Link expirado favor solicite novamente</h3>
+      <p>Clicando aqui</p>
+    </a>
+  {% endif %}
 {%endblock%}
 
 {% block formulario %}
@@ -14,10 +25,14 @@
 {% endblock %}
 
 {%block botton %}
-<button class="btn btn-primary btn-lg btn-block" type="submit">Confirmar</button>
+  {% if validlink %}
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Confirmar</button>
+  {% endif %}
 {% endblock%}
 
 
 {% block footer %}
 <footer class="footer   fixed-bottom mt-5">
 {%endblock%}
+
+

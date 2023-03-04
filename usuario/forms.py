@@ -37,7 +37,6 @@ class SenhaResetConfirmForm(SetPasswordForm):
         validation_error_msg = {}
         password2 = cleaned.get('new_password2')
         
-        print(password2)
         msg_error_espaços_vazio = 'Nao pode conter espaços vazios'
 
         if password2:
