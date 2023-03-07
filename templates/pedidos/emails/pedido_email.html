@@ -1,17 +1,19 @@
 {% autoescape off %}
 {% load static %}
 {% load ultilsfilter%}
+
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
         
 <div class="row">
     <div class="col">
         <h3>{{ produto }}</h3>
-
+        <p>{{produto.user.first_name}} {{produto.user.last_name}}</p>
+        <p>Compra realizada<p>
         <div class="row mt-4">
             <div class="col-lg-2 font-weight-bold">Número do pedido:</div>
             <div class="col-lg-4"><b>"{{ produto.id }}"</b></div>
-            <div class="col-lg-2 font-weight-bold">Total a pagar:</div>
+            <div class="col-lg-2 font-weight-bold">Total pago:</div>
             <div class="col-lg-4"><strong>{{ produto.qtd_valor_total|valores}}</strong></div>
 
             <div class="col-lg-2 font-weight-bold">QTD. Itens:</div>

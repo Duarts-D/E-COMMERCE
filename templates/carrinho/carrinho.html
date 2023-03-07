@@ -1,6 +1,8 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% load ultilsfilter %}
+{% block head%}
+{% endblock %}
 {% block conteudo %}
 
 {% if carrinho %}
@@ -12,13 +14,7 @@
             <p class="lead">Os produtos, quantidades e preços que você escolheu.</p>
         
             {% include 'parciais/_messages.html' %}
-            
-
-            
                     {% include 'parciais/_carrinho.html' %}
-            
-
-
         </div>
     </div>
 
@@ -74,7 +70,7 @@
         </div>
     </div>
 </main>
-
+<br><br><br>
 {%else%}
 <section class="py-5" >
     <div class="d-flex justify-content-center">
@@ -99,6 +95,7 @@
 {%block footer %}
 <footer class="footer bg-dark py-1 fixed-bottom mt-5">
 {%endblock%}
+
 
     {%endif%}
 {%endblock%}

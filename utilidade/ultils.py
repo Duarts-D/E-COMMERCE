@@ -10,9 +10,10 @@ def valoresp(valor):
 def total_valoresp(valores):
         valor_total = sum(
                 [
+                        item.get('preco_total_promo') 
+                        if item.get('preco_total_promo')
+                        else 
                         item.get('preco_total_unitario')
-                        if item.get('preco_total_unitario')
-                        else item.get('preco_total_promo')
                         for item in valores.values()
                 ])
         vlaor = round(valor_total,2)
