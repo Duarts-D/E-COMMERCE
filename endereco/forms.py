@@ -161,7 +161,7 @@ class Perfil_EndercoForm(forms.ModelForm):
             cidade_data = cidade_data.title()
             cleaned['cidade'] = cidade_data
             
-            if digitos_validador(cidade_data):
+            if string_validador(cidade_data):
                 validation_error_msg['cidade'] = 'Nome nao pode conter numeros.'         
                 
         if complemento_data:

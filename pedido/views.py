@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,reverse
+from django.shortcuts import render,redirect,reverse,get_object_or_404,get_list_or_404
 from django.views import View
 from endereco.models import Perfil_Endereco
 from usuario.models import Perfil_Usuario
@@ -7,6 +7,14 @@ from produto.models import Produto
 from django.contrib import messages
 from utilidade.ultils import qtdcar,total_valoresp
 from django.views.generic import DetailView,ListView
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
+from email.mime.image import MIMEImage
+from django.core.files.storage import default_storage
+import base64
+
 
 
 class Pedido_PD(View):
@@ -125,7 +133,7 @@ class Salvar_pedido(View):
         
         del self.request.session['carrinho']
 
-        return redirect('pedido:lista')
+        return redirect('pedido:pedido_email')
             # kwargs={'pk': pedido.pk}))
 
 
@@ -155,3 +163,67 @@ class Detalhe(DetailView):
         if not self.request.user.is_authenticated:
             return redirect('usuario:login')
         return super().get(*args,**kwargs)
+
+def pedido_emailview(request):
+    pedido = get_object_or_404(Pedido,user=request.user)
+    itempedido = get_list_or_404(Itempedido,pedido=pedido)
+    imagem_codificadas = {}
+    for imagem in itempedido:
+        print(imagem.imagem)
+        img_path = 'media/'+ imagem.imagem
+        with open(img_path,'rb') as f:
+            imagem_codificada = base64.b64encode(f.read()).decode("utf-8")
+            imagem_codificadas[imagem.imagem] = imagem_codificada
+    contexto={'imagens':imagem_codificadas,
+              'produto':pedido,
+              'itempedido':itempedido,
+                }
+    print(imagem_codificadas.keys())
+
+    itens = get_list_or_404(Produto,id=1)
+    
+
+
+    html_content = render_to_string('pedidos/emails/pedido_email.html',contexto)
+    text_content = strip_tags(html_content)
+
+    email = EmailMultiAlternatives(
+    'Compra realizada',
+    text_content,
+    settings.EMAIL_HOST_USER,
+    ['deividnaruto@hotmail.com']
+    )
+
+            
+    email.attach_alternative(html_content,'text/html')
+            
+
+    email.send()
+    print('enviado com sucesso')
+    return redirect('pedido:lista')
+
+def rendere(request):
+    pedido = get_object_or_404(Pedido,user=request.user)
+    itempedido = get_list_or_404(Itempedido,pedido=pedido)
+    imagem_codificadas = {}
+    for imagem in itempedido:
+        img_path = 'media/'+ imagem.imagem
+        with open(img_path,'rb') as f:
+            imagem_codificada = base64.b64encode(f.read()).decode("utf-8")
+            imagem_codificadas[imagem.imagem] = imagem_codificada
+    
+    contexto={'imagens':imagem_codificadas,
+              'produto':pedido,
+              'itempedido':itempedido,
+                }
+
+    
+    
+
+    itens = get_list_or_404(Produto,id=1)
+    
+
+
+
+    return render(request,'pedidos/emails/pedido_email.html',contexto)
+    

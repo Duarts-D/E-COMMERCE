@@ -3,24 +3,17 @@
 
 {% load ultilsfilter%}
 
-{% block head%}
-{% endblock %}
+{% block head%}{% endblock %}
+
 {% block conteudo %}
 
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
-
+            
 {% include 'parciais/_detalhe_pedido.html' %}
 
 
-<div class="row mt-4">
-    <div class="col">
-        <a href="{% url 'pedido:lista' %}" class="btn btn-primary btn-block btn-lg">Voltar</a>
-    </div>
 </div>
-
-{%block footer %}
-<footer class="footer bg-dark py-1 fixed-bottom mt-5">
-{%endblock%}
+</section> 
 
 {% endblock %}
