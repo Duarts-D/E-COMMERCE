@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_list_or_404
 from django.views import View
 from endereco.models import Perfil_Endereco
 from usuario.models import Perfil_Usuario
@@ -58,10 +58,10 @@ class Salvar_pedido(View):
         
         carrinho = self.request.session.get('carrinho')
         
-        #TODO tira esse contexto   
-        self.contexto = {
-            'carrinho': self.request.session.get('carrinho')
-        }
+        # #TODO tira esse contexto   
+        # self.contexto = {
+        #     'carrinho': self.request.session.get('carrinho')
+        # }
         carrinho_produtos_ids = [ c for c in carrinho]
         
         # bd_produtos_ids = list(
@@ -80,12 +80,17 @@ class Salvar_pedido(View):
             preco_unit_promo = carrinho[vid]['preco_unitario_promo']
             error_msg_estoque = ''
 
+
             if estoque < qtd_carrinho:
                 carrinho[vid]['quantidade'] = estoque
                 carrinho[vid]['preco_unitario'] = estoque * preco_unit
                 carrinho[vid]['preco_unitario_promo'] = estoque*\
                     preco_unit_promo
-                
+                carrinho[vid]['preco_total_unitario'] = estoque*\
+                    preco_unit_promo
+                carrinho[vid]['preco_total_promo'] = estoque*\
+                    preco_unit_promo
+
                 error_msg_estoque ='Estoque insuficiente para alguns produtos do seu carrinho.'\
                 'Reduzimos a quantidade desse produtos. Por favor, verifique'\
                 'quais produtos foram afetados a seguir.'\
@@ -93,9 +98,14 @@ class Salvar_pedido(View):
                 if error_msg_estoque:
                     messages.error(self.request,error_msg_estoque)
                     
-                    self.request.session.save()
-                    return redirect('cars:carrinho')
-
+                self.request.session.save()
+                return redirect('cars:carrinho')
+            
+        for produto in bd_produtos_ids:
+            vid = str(produto.id)
+            if carrinho[vid]["quantidade"] == 0 :
+                del carrinho[vid]
+                
         qtd_total_carrinho = qtdcar(carrinho)
         valor_total_carrinho = total_valoresp(carrinho)
 
@@ -125,7 +135,18 @@ class Salvar_pedido(View):
             ]
          )
         
+        
         del self.request.session['carrinho']
+
+        qtd_produto = get_list_or_404(Itempedido,pedido=pedido.pk)
+        
+        for p in qtd_produto:
+            produto_id  = Produto.objects.get(id=p.produto_id)
+            estoque = produto_id.estoque 
+            produto_id.estoque = estoque - p.quantidade
+
+            produto_id.save()
+        
         return pedido_emailview(pedido.pk,self.request.user.email)
             
 

@@ -70,11 +70,14 @@ class AdcCarrinho(View):
 
             carrinho[produto_ids]['quantidade'] = quantidade_carrinho
 
-            
-            carrinho[produto_ids]['preco_total_unitario'] = preco_unitario*\
-                quantidade_carrinho
-            carrinho[produto_ids]['preco_total_promo'] = preco_unitario_promo*\
-                quantidade_carrinho
+            if carrinho[produto_ids]['quantidade'] >= 1  :
+                carrinho[produto_ids]['preco_unitario'] = preco_unitario
+                carrinho[produto_ids]['preco_unitario_promo'] = preco_unitario_promo
+                carrinho[produto_ids]['preco_total_unitario'] = preco_unitario*\
+                    quantidade_carrinho
+                carrinho[produto_ids]['preco_total_promo'] = preco_unitario_promo*\
+                    quantidade_carrinho
+
         else:
             carrinho[produto_ids] = {
             'produto_ids' : produto_ids,
@@ -171,11 +174,17 @@ class DelCarrinho_Unitario(View):
         preco_promo = carrinho[produto_id]['preco_unitario_promo']
 
         carrinho[produto_id]['quantidade'] = quantidade_carrinho
-        carrinho[produto_id]['preco_total_unitario'] = preco_unitario*\
-            quantidade_carrinho
-        carrinho[produto_id]['preco_total_promo'] = preco_promo*\
-            quantidade_carrinho
-
+        
+        if carrinho[produto_id]['quantidade'] >= 1:
+            carrinho[produto_id]['preco_total_unitario'] = preco_unitario*\
+                quantidade_carrinho
+            carrinho[produto_id]['preco_total_promo'] = preco_promo*\
+                quantidade_carrinho
+        else:
+            print('oila')
+            carrinho[produto_id]['preco_total_unitario'] = 0
+            carrinho[produto_id]['preco_total_promo'] = 0
+            
         messages.warning(self.request,f'{carrinho[produto_id]["produto_nome"]}'
             f' Retirado do seu carrinho.')
         self.request.session.save()

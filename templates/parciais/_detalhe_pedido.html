@@ -49,15 +49,15 @@
             </td>
                     <td><a href="{% url 'produto:detalhe' linha.slug %}">{{ linha.produto}}</a></td>
                     
-                    {% if linha.preco_promo %}
-                    <td>{{ linha.preco_promo|valores}}</td>
+                    {% if linha.preco_unitario_promo %}
+                        <td> {{ linha.preco_unitario_promo|valores}}</td>
                     {%else%}
-                    <td>{{ linha.preco_unitario|valores}}</td>
+                        <td> {{ linha.preco_unitario|valores}}</td>
                     {%endif%}
                     
                     <td>{{ linha.quantidade}}x </td>
 
-                    {% if linha.preco_promo %}
+                    {% if linha.preco_total_promo %}
                         <td><b>{{ linha.preco_total_promo|valores}}</b></td>
                     {% else %}
                         <td><b>{{ linha.preco_total_unitario|valores}}</b></td>
