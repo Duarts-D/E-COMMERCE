@@ -26,3 +26,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('produto.urls')),
 ] +static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+handler404 ="page_except.views.handler404"

@@ -66,7 +66,6 @@ class EnderecoAlterar(View):
                 endereco.user_perfil = self.perfil_usuario
                 endereco.save()
                 return redirect('pedido:pedido')
-        print('falho o valid')
         return render(self.request,self.template_name,self.contexto)
    
     def get(self,*args,**kwargs):

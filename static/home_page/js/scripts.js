@@ -5,3 +5,9 @@
 */
 // This file is intentionally blank
 // Use this file to add JavaScript to your project
+var input = document.getElementById("my-input");
+var output = document.getElementById("output");
+
+input.addEventListener("input", function() {
+  output.textContent = input.value;
+});

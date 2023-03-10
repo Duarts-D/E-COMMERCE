@@ -3,6 +3,10 @@
 {% block head%}
 {% endblock %}
 
+{%block title%}
+<title>Resumo Da Compra</title>
+{%endblock%}
+
 {% block conteudo %}
 
 <main class="container mt-4 mb-4">
@@ -18,7 +22,7 @@
             <dd class="col-lg-4">{{ perfil_usuario.user_perfil.sobrenome}}</dd>
             
             <dt class="col-lg-2">Idade:</dt>
-            <dd class="col-lg-4">x</dd>
+            <dd class="col-lg-4">{{ perfil_usuario.user_perfil.birthday }} anos</dd>
             <dt class="col-lg-2">Nascimento:</dt>
             <dd class="col-lg-4">{{perfil_usuario.user_perfil.data_de_nascimento}}</dd>
             

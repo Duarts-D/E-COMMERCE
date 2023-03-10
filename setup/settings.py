@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'carrinho.apps.CarrinhoConfig',
     'pedido.apps.PedidoConfig',
     'categoria.apps.CategoriaConfig',
+    'page_except.apps.PageExceptConfig',
     'crispy_forms',
 ]
 

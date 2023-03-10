@@ -6,7 +6,7 @@ from produto.models import Produto
 from django.core.paginator import Paginator
 from django.db.models import Q,Value
 from django.db.models.functions import Concat
-
+import re
 
 class ProdutosView(ListView):
     model = Produto
@@ -68,3 +68,15 @@ class BuscarView(ProdutosView):
         if not self.request.GET.get('buscar'):
             return redirect('produto:produtos')
         return get
+    
+class ProdutosPromoView(ListView):
+    model = Produto
+    template_name = 'produtos/produtos.html'
+    context_object_name = 'produtos'
+    paginate_by = 8
+    ordering = ('id')
+    def get_queryset(self,*args,**kwargs):
+        qs = super().get_queryset(*args,**kwargs)
+        qs = qs.filter(publico=True)
+        qs = qs.exclude(preco_promocional=0)
+        return qs

@@ -181,7 +181,6 @@ class DelCarrinho_Unitario(View):
             carrinho[produto_id]['preco_total_promo'] = preco_promo*\
                 quantidade_carrinho
         else:
-            print('oila')
             carrinho[produto_id]['preco_total_unitario'] = 0
             carrinho[produto_id]['preco_total_promo'] = 0
             

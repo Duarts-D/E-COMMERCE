@@ -132,7 +132,7 @@ class PerfilForm(forms.ModelForm):
     data_de_nascimento = forms.CharField(  
         label='Data de Nascimento',
         required=True,
-        max_length=8,
+        max_length=12,
         widget=forms.DateInput(
             attrs={"class":"form-control form-control-lg",
             "phaceholder":"ex : 01/05/1990"}
@@ -220,16 +220,16 @@ class PerfilForm(forms.ModelForm):
                 if string_validador(sobrenome_data):
                     validation_error_msg['sobrenome'] = 'Sobrenome nao pode conter numeros.'
             
-            if data_de_nascimento_data:
+            # if data_de_nascimento_data:
 
-                if tamanho_len_validador(data_de_nascimento_data,8):
-                    validation_error_msg['data_de_nascimento'] = 'Data de nacimento incompleta'
+            #     if tamanho_len_validador(data_de_nascimento_data,8):
+            #         validation_error_msg['data_de_nascimento'] = 'Data de nacimento incompleta'
 
-                if espaços_vazio_validador(data_de_nascimento_data):
-                    validation_error_msg['data_de_nascimento'] = msg_error_espaços_vazio
+            #     if espaços_vazio_validador(data_de_nascimento_data):
+            #         validation_error_msg['data_de_nascimento'] = msg_error_espaços_vazio
 
-                if digitos_validador(data_de_nascimento_data):
-                    validation_error_msg['data_de_nascimento'] = 'Favor digite somente numero "ex: 08031994".'
+            #     if digitos_validador(data_de_nascimento_data):
+            #         validation_error_msg['data_de_nascimento'] = 'Favor digite somente numero "ex: 08031994".'
             
             if email_data:
                 email_data = email_data.lower()
@@ -268,9 +268,7 @@ class PerfilForm(forms.ModelForm):
 
                 if espaços_vazio_validador(cpf_data):
                     validation_error_msg['cpf'] = 'CPF nao pode conter espaços vazios.'
-                
-                #TODO colocar validador de pcf : 
-                #    
+
                 if not self.usuario:  
                     if cpf_enviado:
                         validation_error_msg['cpf'] = 'CPF Já utilizadoooo.'

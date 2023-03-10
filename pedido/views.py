@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_list_or_404
+from django.shortcuts import render,redirect,get_list_or_404,get_object_or_404
 from django.views import View
 from endereco.models import Perfil_Endereco
 from usuario.models import Perfil_Usuario
@@ -8,6 +8,7 @@ from django.contrib import messages
 from utilidade.ultils import qtdcar,total_valoresp
 from django.views.generic import DetailView,ListView
 from pedido.emails import pedido_emailview
+from email.mime.image import MIMEImage
 
 
 
@@ -57,17 +58,9 @@ class Salvar_pedido(View):
             return redirect('cars:carrinho')
         
         carrinho = self.request.session.get('carrinho')
-        
-        # #TODO tira esse contexto   
-        # self.contexto = {
-        #     'carrinho': self.request.session.get('carrinho')
-        # }
+
         carrinho_produtos_ids = [ c for c in carrinho]
         
-        # bd_produtos_ids = list(
-        #     Produto.objects.select_related('nome') 
-        #     .filter(nome__in=carrinho_produtos_ids)
-        #  )
 
         bd_produtos_ids = Produto.objects.filter(id__in=carrinho_produtos_ids)
 
@@ -135,8 +128,8 @@ class Salvar_pedido(View):
             ]
          )
         
-        
-        del self.request.session['carrinho']
+        #TODO VOLTAR DEL CARRINHO
+        #self.request.session['carrinho']
 
         qtd_produto = get_list_or_404(Itempedido,pedido=pedido.pk)
         
@@ -144,8 +137,8 @@ class Salvar_pedido(View):
             produto_id  = Produto.objects.get(id=p.produto_id)
             estoque = produto_id.estoque 
             produto_id.estoque = estoque - p.quantidade
-
-            produto_id.save()
+            #TODO VOLTAR A SALVE O ESTOQUE
+            #produto_id.save()
         
         return pedido_emailview(pedido.pk,self.request.user.email)
             
@@ -179,4 +172,19 @@ class Detalhe(DetailView):
         return super().get(*args,**kwargs)
 
 
-   
+def renderx(request):
+    pedido = get_object_or_404(Pedido,pk=94)
+    itempedido = get_list_or_404(Itempedido,pedido=pedido)
+    img=[]
+    for imagem in itempedido:
+        img_path = 'media/'+ imagem.imagem
+        with open(img_path,'rb') as f:
+            logo_data = f.read()
+        logo = MIMEImage(logo_data)
+        logo.add_header('Content-ID',f'<{imagem.imagem}>')
+        img.append(logo)
+    contexto={'imagens':img,
+              'produto':pedido,
+              'itempedido':itempedido,
+                }
+    return render(request,'pedidos/emails/teste_email.html',contexto)
