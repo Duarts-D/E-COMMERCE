@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{%block conteudo%}
+
+{% include 'parciais/_buscar.html'%}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        {% include 'parciais/_messages.html' %}
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    
+
+{% if produtos %}
+{% for produto in produtos%}
+
+{% include 'parciais/_cards_produtos.html' %}
+    
+{% endfor %}
+{%else%}    
+<h1>Produtos x Nao Encontrado</h1>
+{%endif%}
+
+</div>
+</div>
+{% include 'parciais/_pagination.html'%}
+
+</section>
+{% endblock %}

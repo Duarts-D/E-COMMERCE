@@ -25,13 +25,15 @@ def pedido_emailview(pk,email):
                 }
     
 
-    html_content_alt = (
-        render_to_string('pedidos/emails/teste_email.html',contexto)
+    html_content = (
+        render_to_string('emails/pedido_email_anexos.html',contexto)
     )
-
+    html_content_alt = (
+                render_to_string('emails/pedido_email.html',contexto))
+    
     email = EmailMultiAlternatives(
     'Compra realizada',
-    html_content_alt,
+    html_content,
     settings.EMAIL_HOST_USER,
     ['deividnaruto@hotmail.com','dddduartegtgt@gmail.com']
     )
@@ -40,7 +42,8 @@ def pedido_emailview(pk,email):
     email.attach_alternative(html_content_alt,'text/html')
 
 
-    # for i in img:
-    #     email.attach(i)
+    #for i in img:
+       #email.attach(i)
+       
     email.send()
     return redirect('pedido:pedido')

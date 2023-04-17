@@ -110,7 +110,7 @@ class AdcCarrinho(View):
         return redirect(http_refere)
 
 class Carrinho(View):
-    template_name = 'carrinho/carrinho.html'
+    template_name = 'carrinho.html'
     def get(self,*args,**kwargs):
         contexto = {
             'carrinho' : self.request.session.get('carrinho',{})

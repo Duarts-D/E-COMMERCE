@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% load ultilsfilter%}
+
+{%block title%}
+<title>Meus Pedidos</title>
+{%endblock%}
+
+{% block head%}
+{% endblock %}
+
+{% block conteudo %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <div class="col">
+                <h3 class="mb-4">{{ user.first_name}} {{ user.last_name}}</h3>
+                <p>Abaixo todos os seus pedidos realizados na loja.</p>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr>
+                            <th scope="col">Pedido</th>
+                            <th scope="col">Total Valor</th>
+                            <th scope="col">Qtd. Itens</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Mais detalhes</th>
+                            <th scope="col">Gerar PDF</th>
+
+                        </tr>
+
+                        {% for pedindo in pedidos %}
+                        <tr>
+                            <th scope="row">{{ pedindo}}</td>
+                            <td>{{ pedindo.qtd_valor_total|valores}}</td>
+                            <td>{{ pedindo.total }}</td>
+                            <td>{{ pedindo.get_status_display }}</td>
+                            <td>
+                                <a href="{% url 'pedido:detalhe' pedindo.pk %}">
+                                    Ver <i class="fas fa-search-plus ml-2"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'gerar:gerar_pdf' pedindo.pk %}">
+                                    PDF <i class="fas fa-search-plus ml-2"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    {% include 'parciais/_pagination.html'%}
+</section>
+
+{%block footer %}
+<footer class="footer bg-dark py-1 fixed-bottom mt-5">
+{%endblock%}
+
+{% endblock %}

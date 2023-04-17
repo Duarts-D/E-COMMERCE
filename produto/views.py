@@ -10,7 +10,7 @@ import re
 
 class ProdutosView(ListView):
     model = Produto
-    template_name = 'produtos/produtos.html'
+    template_name = 'produtos.html'
     context_object_name = 'produtos'
     paginate_by = 8
     ordering = ('id')
@@ -22,7 +22,7 @@ class ProdutosView(ListView):
         
 class DetalheView(DetailView):
     model = Produto
-    template_name = 'produtos/detalhe_produto.html'
+    template_name = 'detalhe_produto.html'
     context_object_name = 'detalhe'
     slug_url_kwarg = 'slug'
     paginate_by = 4
@@ -44,7 +44,7 @@ class DetalheView(DetailView):
         return contexto
 
 class BuscarView(ProdutosView):
-    template_name = 'produtos/produtos.html'
+    template_name = 'produtos.html'
     
 
     def get_queryset(self) :
@@ -71,7 +71,7 @@ class BuscarView(ProdutosView):
     
 class ProdutosPromoView(ListView):
     model = Produto
-    template_name = 'produtos/produtos.html'
+    template_name = 'produtos.html'
     context_object_name = 'produtos'
     paginate_by = 8
     ordering = ('id')

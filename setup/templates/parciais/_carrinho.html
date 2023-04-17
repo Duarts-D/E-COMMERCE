@@ -1,0 +1,72 @@
+{%load static %}
+{% load ultilsfilter %}
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th class="d-none d-lg-block">Imagem</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Valor Unit.</th>
+            <th>Total</th>
+        </tr>
+
+{% for itens in carrinho.values %}
+
+<tr>
+    <td class="d-none d-lg-block">
+        {% if not itens.imagem == '' %}
+        <div class="card-img" style="width: 10rem;">
+            <img class="card-img" src="{% get_media_prefix %}{{ itens.imagem }}">
+        {% else %}
+            <img class="card-img" src="{% static 'imgs/imagem_indisponivel.jpg' %}" >
+        {% endif %}
+    </td>
+    <td>
+        <a href="{% url 'produto:detalhe' itens.slug %}">
+        {{ itens.produto_nome }}
+        </a>
+    </td>
+    <td>
+
+        <div style="display: flex; align-items: center; width: fit-content;">
+            {% if itens.quantidade == 1 %}
+            <a style="color: gray;">
+            {%else%}
+            <a href="{% url 'cars:del_carrinho_unitario'%}?car_del={{itens.produto_ids}}" style="color: orange;">
+            {% endif %}
+                <h2 class="bi bi-chevron-left"></h2>
+            </a>
+
+            <h2 class="text-center">{{ itens.quantidade }}</h2>
+            
+            <a href="{% url 'cars:adc_carrinho' %}?car={{itens.produto_ids}}"  style="color: orange;">
+                <h2 class="bi bi-chevron-right" ></h2>
+            </a>
+        </div>
+
+        <a class="btn-outline-danger" class="ml-3" href="{% url 'cars:del_carrinho'%}?car_del={{itens.produto_ids}}">
+            <i class="bi bi-trash-fill" ></i>
+            Remover
+        </a>
+        
+    </td>
+
+    <td>
+        {% if itens.preco_unitario_promo %}
+            {{ itens.preco_unitario_promo |valores}}
+        {%else%}
+           {{itens.preco_unitario |valores}}
+        {% endif %}
+    </td>
+    
+    {% if itens.preco_total_promo %}
+        <td>{{itens.preco_total_promo|valores}}</td>
+    {% else %}
+        <td>{{ itens.preco_total_unitario|valores }}</td>
+    {% endif %}
+
+</tr>
+{% endfor %}
+</table>
+</div>

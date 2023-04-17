@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% load  static %}
+{% load ultilsfilter%}
+
+{%block title%}
+<title>{{produto}}</title>
+{%endblock%}
+
+{% block head%}{% endblock %}
+
+{% block conteudo %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+            
+{% include 'parciais/_detalhe_pedido.html' %}
+
+<p><br><br><br></p>
+
+</div>
+</section> 
+
+{% endblock %}

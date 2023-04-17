@@ -25,6 +25,8 @@ urlpatterns = [
     path('',include('usuario.urls')),
     path('admin/', admin.site.urls),
     path('',include('produto.urls')),
+    path('gerar/',include('gerador_pdf.urls')),
+
 ] +static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
 handler404 ="page_except.views.handler404"

@@ -1,0 +1,113 @@
+{% load static %}
+{% load ultilsfilter%}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico'%}" />
+        <!-- Bootstrap icons-->
+        <link href="http://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    </head>
+    <body>
+    
+    
+    {% block head%}
+        {% include 'parciais/_head.html' %}
+    {% endblock %}
+        <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+
+            <h1 class="text-center mx-auto">Formulario de retirada de estoque</h1>
+                <div class="col">
+                    <h3 class="text-center mx-auto" >{{ produto }}</h3>
+                    <div class="table-responsive mt-3">
+                        <table class="table">
+
+                    <div class="row mt-4">
+                        <tr>
+                        <th><div class="col-lg-2 font-weight-bold">Número do pedido:</div></th>
+                        <th><div class="col-lg-2 font-weight-bold">Total a pagar:</div></th>
+                        <th><div class="col-lg-2 font-weight-bold">QTD. Itens:</div></th>
+                        <th><div class="col-lg-2 font-weight-bold">Status:</div></th>
+                        </tr>
+                        <tr>
+                        <td><div class="col-lg-4"><b>"{{ pedido.id }}"</b></div></td>
+                        <td><div class="col-lg-4"><strong>{{ pedido.qtd_valor_total|valores}}</strong></div></td>
+                        <td><div class="col-lg-4">{{ pedido.total }}</div></td>
+                        <td><div class="text-danger" ><b>{{ pedido.get_status_display }}</b></div></td>
+                    </tr>
+                    </div>
+                </table>
+                </div>
+
+                    <div class="row mt-4">
+                        <div class="col">
+                            <h2 class="text-center mx-auto">Produtos</h2>
+                        </div>
+                    </div>
+            
+                    <div class="table-responsive mt-3">
+                        <table class="table">
+                            <tr>
+                                <th>Imagem</th>
+                                <th>Produto</th>
+                                <th>Valor Unitario.</th>
+                                <th>QTD.</th>
+                                <th>Total</th>
+                            </tr>
+                            {% for linha in pedido.itempedido_set.all %}
+                            <tr>
+                            <td class="d d-lg">
+                            {% if not linha.imagem == '' %}
+                            <div class="card-img" style="width: 10rem;">
+                                <img src="{{path}}{% get_media_prefix %}{{linha.imagem }}" width="150" height="150">
+                            {% else %}
+                                <img class="card-img" src="{% static 'imgs/imagem_indisponivel.jpg' %}" >
+                            {% endif %}    
+                            </a>      
+                        </td>
+                                <td>{{ linha.produto}}</td>
+                                
+                                {% if linha.preco_unitario_promo %}
+                                    <td> {{ linha.preco_unitario_promo|valores}}</td>
+                                {%else%}
+                                    <td> {{ linha.preco_unitario|valores}}</td>
+                                {%endif%}
+                                
+                                <td>{{ linha.quantidade}}x </td>
+            
+                                {% if linha.preco_total_promo %}
+                                    <td><b>{{ linha.preco_total_promo|valores}}</b></td>
+                                {% else %}
+                                    <td><b>{{ linha.preco_total_unitario|valores}}</b></td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+
+            <div style="display: flex; justify-content: space-between;">
+                <div style="text-align: left;">Funcionário: ___________________________________________</div>
+                <div style="text-align: right;">Cliente: ______________________________________________</div>
+            </div>
+            <div class="mt-4 mb-4" style="display: flex; justify-content: space-between;">
+                <div style="text-align: left;">
+                Retirada: ( ) /
+                Enviado: ( )
+                </div>
+                Data:________________________________
+
+            </div>
+    </div>
+    </section> 
+</body>
+</html>
+

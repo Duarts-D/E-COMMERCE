@@ -13,7 +13,7 @@ from email.mime.image import MIMEImage
 
 
 class Pedido_PD(View):
-    template_name ='pedidos/pedido.html'
+    template_name ='pedido.html'
     
     def setup(self,request,*args,**kwargs):
         super().setup(request,*args,**kwargs)
@@ -47,7 +47,7 @@ class Pedido_PD(View):
 
 
 class Salvar_pedido(View):
-    template_name = 'pedidos/pedido.html'
+    template_name = 'pedido.html'
 
     def get(self,*args,**kwargs):
 
@@ -147,7 +147,7 @@ class Salvar_pedido(View):
 class ListPedido(ListView):
     model = Pedido
     context_object_name = 'pedidos'
-    template_name = 'pedidos/status_pedido.html'
+    template_name = 'status_pedido.html'
     paginate_by = 4
     ordering = ['-id']
     
@@ -163,7 +163,7 @@ class ListPedido(ListView):
 class Detalhe(DetailView):
     model = Pedido
     context_object_name = 'produto'
-    template_name = 'pedidos/detalhe_pedido.html'
+    template_name = 'detalhe_pedido.html'
     pk_url_kwarg = 'pk'
     
     def get(self,*args,**kwargs):
@@ -172,19 +172,11 @@ class Detalhe(DetailView):
         return super().get(*args,**kwargs)
 
 
-def renderx(request):
-    pedido = get_object_or_404(Pedido,pk=94)
-    itempedido = get_list_or_404(Itempedido,pedido=pedido)
-    img=[]
-    for imagem in itempedido:
-        img_path = 'media/'+ imagem.imagem
-        with open(img_path,'rb') as f:
-            logo_data = f.read()
-        logo = MIMEImage(logo_data)
-        logo.add_header('Content-ID',f'<{imagem.imagem}>')
-        img.append(logo)
-    contexto={'imagens':img,
-              'produto':pedido,
-              'itempedido':itempedido,
-                }
-    return render(request,'pedidos/emails/teste_email.html',contexto)
+class OsServicosView(ListView):
+    model = Pedido
+    context_object_name = 'pedidos'
+    template_name = 'status_pedido.html'
+    paginate_by = 10 
+    ordering = ['-pk']
+    
+

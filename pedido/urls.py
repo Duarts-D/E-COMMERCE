@@ -1,5 +1,6 @@
 from django.urls import path
-from pedido.views import Pedido_PD,Salvar_pedido,ListPedido,Detalhe,renderx
+from pedido.views import Pedido_PD,Salvar_pedido,ListPedido,Detalhe,OsServicosView
+
 
 app_name = 'pedido'
 
@@ -8,7 +9,7 @@ urlpatterns = [
     path('salvar_pedido/',Salvar_pedido.as_view(),name='salvar_pedido'),
     path('lista/',ListPedido.as_view(),name='lista'),
     path('detalhe/<int:pk>',Detalhe.as_view(),name='detalhe'),
-    path('renderx/',renderx,name='render'),
+    path('os/servicos/',OsServicosView.as_view(),name='os_servicos'),
 
 
 ]

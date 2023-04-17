@@ -7,7 +7,7 @@ from usuario.models import Perfil_Usuario
 from django.contrib.auth.models import User
 
 class Endereco(View):
-    template_name = 'endereco/endereco.html'
+    template_name = 'endereco.html'
     def setup(self,*args,**kwargs):
         super().setup(*args,**kwargs)
 
@@ -47,7 +47,7 @@ class Endereco(View):
         return render(self.request,self.template_name,self.contexto)
 
 class EnderecoAlterar(View):
-    template_name = 'endereco/atualizar_endereco.html'
+    template_name = 'atualizar_endereco.html'
     def setup(self,*args,**kwargs):
         super().setup(*args,**kwargs)
         self.perfil_usuario = Perfil_Usuario.objects.filter(user=self.request.user).first()

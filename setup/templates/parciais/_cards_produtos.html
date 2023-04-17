@@ -1,0 +1,65 @@
+{% load static %}
+
+<div class="col mb-5">
+    <div class="card h-100">
+        <!-- Sale badge-->
+        {% if produto.preco_promocional %}
+            <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">oferta</div>
+        {% endif %}
+        
+        <a href="{% url 'produto:detalhe' produto.slug %}" >
+        {% if produto.imagem %}
+        
+        <img class="card-img-top" src="{{ produto.imagem.url }}" alt="..." />
+        
+        {% else %}
+            <img class="card-img-top" src="{% static 'home_page/img/imagem_indisponivel.jpg' %}" alt="..." />
+        {% endif %}
+        </a>
+<div class="card-body p-4">
+    <div class="text-center">
+        <!-- Product name-->
+        <h5 class="fw-bolder">{{ produto.nome|truncatechars:70 }}</h5>
+        <!-- Product reviews-->
+        <div class="d-flex justify-content-center small text-warning mb-2">
+            <div class="bi-star-fill"></div>
+            <div class="bi-star-fill"></div>
+            <div class="bi-star-fill"></div>
+            <div class="bi-star-fill"></div>
+            <div class="bi-star-fill"></div>
+        </div>
+        <!-- Product price-->
+        {% if produto.preco_promocional %}
+        <span class="text-muted text-decoration-line-through">{{ produto.preco}}</span>
+        {{ produto.preco_promocional }}
+        {%else%}
+        <span class="text-muted text-decoration-line-through"></span>
+        {{ produto.preco}}
+        {% endif%}
+    
+    </div>
+</div>
+<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+    {% if produto.estoque >= 1 %}
+    <form action="{% url 'cars:adc_carrinho' %}">
+        <div class="text-center">
+        <button type="submit" name="car" value="{{produto.id}}" class="btn btn-outline-dark flex-shrink-0" >
+            <i class="bi-cart-fill me-1"></i>
+            Comprar
+        </button>
+    </div>
+</form>
+{%else%}
+<div class="text-center">
+<button  name="car" value="{{produto.id}}" class="btn btn-outline-dark flex-shrink-0" disabled >
+    <i class="bi-cart-fill me-1"></i>
+    Sem estoque
+</button>
+</div>
+
+{% endif %}
+</div>
+</div>
+</div>
+
+

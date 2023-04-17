@@ -1,0 +1,29 @@
+{% extends 'base/form_base.html' %}
+
+{%block title%}
+  <title>Alterar Senha... | {{user.first_name}} {{user.last_name}}</title>
+{%endblock%}
+
+{% block titulo %}
+<h3 class="mb-5">Atualizar Senha...</h3>
+{%endblock%}
+
+{% block formulario %}
+  {% for field in form.visible_fields%}
+    {% include 'parciais/_formulario_padrao.html'%}
+  {%endfor%}
+{% endblock %}
+
+{% block contexto %}
+  <ul>
+    <li>Sua senha não pode ser muito parecida com o resto das suas informações pessoais.</li>
+    <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
+    <li>Sua senha não pode ser uma senha comumente utilizada.</li>
+    <li>Sua senha não pode ser inteiramente numérica.</li>
+    <li>Sua senha precisa conter pelo menos 1 letra minúscula e 1 letra maiúscula.</li>
+  <ul>  
+{% endblock %}
+
+{%block botton %}
+  <button class="btn btn-primary btn-lg btn-block" type="submit">Confirmar</button>
+{% endblock%}

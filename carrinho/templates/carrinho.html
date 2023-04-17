@@ -1,0 +1,109 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load ultilsfilter %}
+
+
+{%block title%}
+<title>Carrinho</title>
+{%endblock%}
+
+{% block head%}
+{% endblock %}
+
+
+{% block conteudo %}
+
+{% if carrinho %}
+<main class="container mt-4 mb-4">
+
+    <div class="row mt-3">
+        <div class="col">
+            <h3>Carrinho de compras</h3>
+            <p class="lead">Os produtos, quantidades e preços que você escolheu.</p>
+        
+            {% include 'parciais/_messages.html' %}
+                    {% include 'parciais/_carrinho.html' %}
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-lg">
+            <h2 ><b>FRETE</b></h2>
+            <div class='table-responsive'>
+                <table class="table">
+                    <tr>
+                        <td>
+                            <class='lead'>
+                                FRETE</td>
+                                <td>
+                                    <h2><b>#opçoes de frente</b></h2>
+                            </td>
+                    </tr>
+                </table>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg">
+                <h2 ><b>RESULMO</b></h2>
+                <div class='table-responsive'>
+                    <table class="table">
+                        <tr>
+                            <td>
+                                <class='lead'>
+                                    Valor dos Produtos:</td>
+                                    <td>
+                                        <h2><b>{{carrinho|total_valores|valores}}</b></h2>
+                                </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        
+        <div class="col-lg mt-auto">
+            
+            <a class="btn btn-lg btn-block btn-primary" 
+            {% if request.user.is_authenticated %}
+            href="{% url 'enderecos:endereco'%}">
+            {%else%}
+            href="{% url 'usuario:login'%}">
+            {%endif%}
+            
+                IR PARA O PAGAMENTO 
+            </a>
+
+            <a class="btn btn-lg btn-block btn-primary" href="{% url 'produto:produtos' %}">
+                CONTINUAR COMPRANDO
+             </a>
+        </div>
+    </div>
+</main>
+<br><br><br>
+{%else%}
+<section class="py-5" >
+    <div class="d-flex justify-content-center">
+    <div>
+        <h1>Carrinho Vazio</h1>
+    </div>
+    </div>
+<div class="container px-4 px-lg-5 mt-3">
+    {% include 'parciais/_messages.html' %}
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <a href="{% url 'produto:produtos' %}">        
+        <button class="btn btn-outline-danger" >
+                <h1><i  class="bi-cart-fill me-1"></i></h1>
+                <h1>Continuar Comprando</h1>
+                <span class="badge bg-dark text-white ms-1 rounded-pill"></span>
+            </button>
+
+        </a>
+        </div>
+    </div>
+    </section>
+{%block footer %}
+<footer class="footer bg-dark py-1 fixed-bottom mt-5">
+{%endblock%}
+
+
+    {%endif%}
+{%endblock%}

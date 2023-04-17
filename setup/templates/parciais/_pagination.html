@@ -1,0 +1,78 @@
+{% if page_obj.paginator.num_pages >= 2 %}
+
+{% if paginator or page_obj %}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        
+        {% if request.GET.buscar %}
+        <li class="page-item ">
+            <a class="page-link" href="?page=1&buscar={{request.GET.buscar}}" >&laquo;</a>
+            </li>
+            <li class="page-item ">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}&buscar={{request.GET.buscar}}" >Anterior</a>
+            </li>
+        {%else%}
+            <li class="page-item ">
+            <a class="page-link" href="?page=1" >&laquo;</a>
+            </li>
+            <li class="page-item ">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" >Anterior</a>
+            </li>
+        {%endif%}
+        {%endif%}
+    
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            
+                {% if request.GET.buscar%}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{num}}&buscar={{request.GET.buscar}}">{{num}}</a>
+                    </li>
+                {%else%}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{num}}">{{num}}</a>
+                    </li>
+                {%endif%}
+
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        
+            {% if request.GET.buscar%}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{num}}&buscar={{request.GET.buscar}}">{{num}}</a>
+                </li>
+            {%else%}
+            <li class="page-item">
+                <a class="page-link" href="?page={{num}}">{{num}}</a>
+            </li>
+            {%endif %}
+        
+        {%endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+            
+            {% if request.GET.buscar %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&buscar={{request.GET.buscar}}">Proximo</a>
+                    </li>
+                    <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&buscar={{request.GET.buscar}}">&raquo;</a>
+                    </li>
+
+                {%else%}
+                <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Proximo</a>
+                </li>
+                <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                </li>
+                
+            {% endif %}
+
+        {% endif %}
+    </ul>
+  </nav>
+{% endif %} 
+{% endif %} 
