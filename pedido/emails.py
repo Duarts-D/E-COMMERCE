@@ -42,8 +42,8 @@ def pedido_emailview(pk,email):
     email.attach_alternative(html_content_alt,'text/html')
 
 
-    #for i in img:
-       #email.attach(i)
+    for i in img:
+       email.attach(i)
        
     email.send()
     return redirect('pedido:pedido')
