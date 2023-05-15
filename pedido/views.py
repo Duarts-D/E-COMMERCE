@@ -26,10 +26,12 @@ class Pedido_PD(View):
         
         perfil_user = Perfil_Endereco.objects.get(user_perfil=user.id)
         
-        
+        frete = self.request.session.get('frete')
+
         self.contexto = {
             'perfil_usuario': perfil_user, 
-            'carrinho': self.request.session.get('carrinho')
+            'carrinho': self.request.session.get('carrinho'),
+            'preco':frete['preco']
         }
 
     def get(self,*args,**kwargs):
