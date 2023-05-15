@@ -5,7 +5,9 @@ from pedido.models import Pedido
 import os
 from django.template.loader import get_template
 from django.conf import settings
+from rolepermissions.decorators import has_permission_decorator
 
+@has_permission_decorator('gerar_pdf')
 def gerador_html(request,pk):
     pedido = Pedido.objects.get(pk=pk)
     path = os.path.join(settings.BASE_DIR)

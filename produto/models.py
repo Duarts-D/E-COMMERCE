@@ -24,6 +24,10 @@ class Produto(models.Model):
     publico = models.BooleanField(default=False)
     slug = models.SlugField(unique=True,blank=True)
     categoria = models.CharField(max_length=3,choices=CATEGORIAS,default='CPU')
+    peso = models.FloatField(default=0,blank=True,null=True)
+    comprimento = models.FloatField(default=0,blank=True,null=True)
+    altura = models.FloatField(default=0,blank=True,null=True)
+    largura = models.FloatField(default=0,blank=True,null=True)
 
     objects = models.Manager()
 

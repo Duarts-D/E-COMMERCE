@@ -10,6 +10,4 @@ urlpatterns = [
     path('lista/',ListPedido.as_view(),name='lista'),
     path('detalhe/<int:pk>',Detalhe.as_view(),name='detalhe'),
     path('os/servicos/',OsServicosView.as_view(),name='os_servicos'),
-
-
 ]

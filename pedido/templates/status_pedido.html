@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load ultilsfilter%}
+{% load permission_tags%}
 
 {%block title%}
 <title>Meus Pedidos</title>
@@ -25,7 +26,10 @@
                             <th scope="col">Qtd. Itens</th>
                             <th scope="col">Status</th>
                             <th scope="col">Mais detalhes</th>
-                            <th scope="col">Gerar PDF</th>
+
+                            {% if user|can:'gerar_pdf' %}
+                                <th scope="col">Gerar PDF</th>
+                            {% endif %}
 
                         </tr>
 
@@ -40,11 +44,13 @@
                                     Ver <i class="fas fa-search-plus ml-2"></i>
                                 </a>
                             </td>
+                            {% if user|can:'gerar_pdf' %}
                             <td>
                                 <a href="{% url 'gerar:gerar_pdf' pedindo.pk %}">
                                     PDF <i class="fas fa-search-plus ml-2"></i>
                                 </a>
                             </td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </table>
@@ -56,7 +62,7 @@
     {% include 'parciais/_pagination.html'%}
 </section>
 
-{%block footer %}
+{% block footer %}
 <footer class="footer bg-dark py-1 fixed-bottom mt-5">
 {%endblock%}
 

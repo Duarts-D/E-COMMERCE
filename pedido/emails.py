@@ -26,7 +26,7 @@ def pedido_emailview(pk,email):
     
 
     html_content = (
-        render_to_string('emails/pedido_email_anexos.html',contexto)
+        render_to_string('emails/teste2.html',contexto)
     )
     html_content_alt = (
                 render_to_string('emails/pedido_email.html',contexto))

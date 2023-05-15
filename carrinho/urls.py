@@ -8,6 +8,4 @@ urlpatterns = [
     path('adc_carrinho',AdcCarrinho.as_view(),name='adc_carrinho'),
     path('del_carrinho/',DelCarrinho.as_view(),name='del_carrinho'),
     path('del_carrinho_unitario/',DelCarrinho_Unitario.as_view(),name='del_carrinho_unitario'),
-
-
 ]

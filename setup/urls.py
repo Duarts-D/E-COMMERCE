@@ -26,6 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('produto.urls')),
     path('gerar/',include('gerador_pdf.urls')),
+    path('permissions/',include('permissions.urls')),
+
 
 ] +static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
