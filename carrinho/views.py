@@ -152,6 +152,9 @@ class Carrinho(View):
                     'frete_entrega': frete[0],
                     'preco': frete[1],
                 }
+
+                self.request.session['frete'] = {'preco': frete[1]}
+                self.request.session.save()
         self.contexto['carrinho'] = self.request.session.get('carrinho',{})
         
 

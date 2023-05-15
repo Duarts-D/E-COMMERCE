@@ -24,10 +24,12 @@ class Pedido_PD(View):
         
         perfil_user = Perfil_Endereco.objects.get(user_perfil=user.id)
         
+        frete = self.request.session.get('frete')
         
         self.contexto = {
             'perfil_usuario': perfil_user, 
-            'carrinho': self.request.session.get('carrinho')
+            'carrinho': self.request.session.get('carrinho'),
+            'preco':frete['preco']
         }
 
     def get(self,*args,**kwargs):
@@ -137,9 +139,11 @@ class Salvar_pedido(View):
             estoque = produto_id.estoque 
             produto_id.estoque = estoque - produto.quantidade
             produto_id.save()
-
-        pedido_email_html(pk=pedido.pk,email_user=self.request.user.email)
+        
+        frete = self.request.session.get('frete')
+        pedido_email_html(pk=pedido.pk,email_user=self.request.user.email,valor_frete=frete)
         messages.success(self.request,'Compra Realizada com Sucesso')
+        
         
         return redirect(reverse('pedido:detalhe',kwargs={'pk':pedido.pk}))
             

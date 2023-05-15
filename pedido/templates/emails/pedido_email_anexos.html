@@ -247,8 +247,8 @@
 
             </div>
         
-                <div class="col-lg-2 font-weight-bold">Total pago: {{ produto.qtd_valor_total|valores}} </div>
-    
+                <div class="col-lg-2 font-weight-bold">Total pago: {{ produto.qtd_valor_total|email_frete:preco}} </div>
+                <div class="col-lg-2 font-weight-bold">Frete : {{preco}}
                 <div class="col-lg-2 font-weight-bold">QTD. Itens: {{ produto.total }} </div>
                 <div class="col-lg-2 font-weight-bold">Status: {{ produto.get_status_display }} </div>
             </div>

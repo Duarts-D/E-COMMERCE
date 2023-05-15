@@ -6,7 +6,7 @@ from email.mime.image import MIMEImage
 from config import EMAIL_HOST_USER
 
 
-def pedido_email_html(pk,email_user):
+def pedido_email_html(pk,email_user,valor_frete):
     pedido = get_object_or_404(Pedido,pk=pk)
     itempedido = get_list_or_404(Itempedido,pedido=pedido)
 
@@ -20,7 +20,8 @@ def pedido_email_html(pk,email_user):
         imagens.append(logo)
 
     contexto={'produto':pedido,
-              'itempedido':itempedido,
+                'itempedido':itempedido,
+                'preco':valor_frete['preco']
                 }
     
     html_content = (
