@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_list_or_404,get_object_or_404
+from django.shortcuts import render,redirect,get_list_or_404,reverse
 from django.views import View
 from endereco.models import Perfil_Endereco
 from usuario.models import Perfil_Usuario
@@ -7,9 +7,7 @@ from produto.models import Produto
 from django.contrib import messages
 from utilidade.ultils import qtdcar,total_valoresp
 from django.views.generic import DetailView,ListView
-from pedido.emails import pedido_emailview
-from email.mime.image import MIMEImage
-from rolepermissions.permissions import grant_permission
+from pedido.emails import pedido_email_html
 
 
 class Pedido_PD(View):
@@ -27,7 +25,6 @@ class Pedido_PD(View):
         perfil_user = Perfil_Endereco.objects.get(user_perfil=user.id)
         
         frete = self.request.session.get('frete')
-
         self.contexto = {
             'perfil_usuario': perfil_user, 
             'carrinho': self.request.session.get('carrinho'),
@@ -131,19 +128,23 @@ class Salvar_pedido(View):
             ]
          )
         
-        #TODO VOLTAR DEL CARRINHO
-        #self.request.session['carrinho']
+        
+        del self.request.session['carrinho']
 
         qtd_produto = get_list_or_404(Itempedido,pedido=pedido.pk)
         
-        for p in qtd_produto:
-            produto_id  = Produto.objects.get(id=p.produto_id)
+        for produto in qtd_produto:
+            produto_id  = Produto.objects.get(id=produto.produto_id)
             estoque = produto_id.estoque 
-            produto_id.estoque = estoque - p.quantidade
-            #TODO VOLTAR A SALVE O ESTOQUE
-            #produto_id.save()
+            produto_id.estoque = estoque - produto.quantidade
+            produto_id.save()
         
-        return pedido_emailview(pedido.pk,self.request.user.email)
+        frete = self.request.session.get('frete')
+        pedido_email_html(pk=pedido.pk,email_user=self.request.user.email,valor_frete=frete)
+        messages.success(self.request,'Compra Realizada com Sucesso')
+        
+        
+        return redirect(reverse('pedido:detalhe',kwargs={'pk':pedido.pk}))
             
 
 

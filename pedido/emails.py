@@ -1,49 +1,45 @@
-import base64
-from django.shortcuts import render,redirect,reverse,get_object_or_404,get_list_or_404
+from django.shortcuts import redirect,get_object_or_404,get_list_or_404
 from pedido.models import Pedido,Itempedido
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
-from django.conf import settings
 from email.mime.image import MIMEImage
+from config import EMAIL_HOST_USER
 
-def pedido_emailview(pk,email):
+
+def pedido_email_html(pk,email_user,valor_frete):
     pedido = get_object_or_404(Pedido,pk=pk)
     itempedido = get_list_or_404(Itempedido,pedido=pedido)
 
-    img=[]
+    imagens=[]
     for imagem in itempedido:
         img_path = 'media/'+ imagem.imagem
         with open(img_path,'rb') as f:
             logo_data = f.read()
         logo = MIMEImage(logo_data)
         logo.add_header('Content-ID',f'<{imagem.imagem}>')
-        img.append(logo)
+        imagens.append(logo)
 
     contexto={'produto':pedido,
-              'itempedido':itempedido,
+                'itempedido':itempedido,
+                'preco':valor_frete['preco']
                 }
     
-
     html_content = (
-        render_to_string('emails/teste2.html',contexto)
+        render_to_string('emails/pedido_email.html',contexto)
     )
     html_content_alt = (
-                render_to_string('emails/pedido_email.html',contexto))
+                render_to_string('emails/pedido_email_anexos.html',contexto))
     
     email = EmailMultiAlternatives(
     'Compra realizada',
     html_content,
-    settings.EMAIL_HOST_USER,
-    ['deividnaruto@hotmail.com','dddduartegtgt@gmail.com']
+    EMAIL_HOST_USER,
+    [email_user,]
     )
 
-            
     email.attach_alternative(html_content_alt,'text/html')
 
-
-    #for i in img:
-       #email.attach(i)
-       
-    email.send()
-    return redirect('pedido:pedido')
+    for anexo in imagens:
+       email.attach(anexo)
+    
+    return email.send()
