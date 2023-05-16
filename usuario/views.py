@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404,HttpResponse
 from django.views import View
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate,login,logout
@@ -32,9 +32,12 @@ class LoginView(View):
                 return redirect('cars:carrinho')
         
         messages.error(self.request,'Email ou senha incorreto')
+    
         return redirect('usuario:login')      
     
     def get(self, *args,**kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('produto:produtos')  
         return render(self.request,self.template_name)
 
 class CadastroView(View):
@@ -58,7 +61,6 @@ class CadastroView(View):
             cpf = self.perfilform.cleaned_data.get('cpf')
             senha = self.senhaforms.cleaned_data.get('password')
             
-            print(senha)
             user = User.objects.create_user(
                 username=cpf,
                 email=email,
@@ -111,7 +113,6 @@ class AtualizarDadosgrView(View):
                 perfil = self.perfilform.save(commit=False)
                 perfil.user = user
                 perfil.save()
-                print('atualizado')
                 return redirect('usuario:atualizacao_concluida')
                 
         else:

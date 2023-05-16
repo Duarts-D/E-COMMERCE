@@ -18,3 +18,11 @@ def total_valoresp(valores):
                 ])
         vlaor = round(valor_total,2)
         return vlaor
+
+def valor_total_frete(carrinho,frete):
+        frete = str(frete).replace('R$','').replace(',','.')
+        frete = float(frete)
+        valor_total_carrinho = total_valoresp(carrinho)
+        total = frete + valor_total_carrinho        
+        total = valoresp(total)
+        return total

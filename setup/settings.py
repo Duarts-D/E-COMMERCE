@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'page_except.apps.PageExceptConfig',
     'gerador_pdf.apps.GeradorPdfConfig',
     'crispy_forms',
+    'permissions.apps.PermissionsConfig',
+    'rolepermissions',
 ]
 
 MIDDLEWARE = [
@@ -174,3 +176,6 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST = config('EMAIL_HOST')
+
+# ROLE PERMISSIONS
+ROLEPERMISSIONS_MODULE = "permissions.permissoes_roles"

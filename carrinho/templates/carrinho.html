@@ -25,7 +25,7 @@
                     {% include 'parciais/_carrinho.html' %}
         </div>
     </div>
-
+    {% if request.user.is_authenticated or frete_entrega %}
     <div class="row mt-3">
         <div class="col-lg">
             <h2 ><b>FRETE</b></h2>
@@ -34,50 +34,92 @@
                     <tr>
                         <td>
                             <class='lead'>
-                                FRETE</td>
-                                <td>
-                                    <h2><b>#opçoes de frente</b></h2>
+                                SEDEX:
+                            {% if endereco %}
+                            <p>{{endereco.rua_avenida}} - {{endereco.bairro}} -  
+                                {{endereco.localidade}} - {{endereco.uf}} 
+                            </p>
+                            {% endif %}
+                            </td>
+                                <td class="col-md-4">
+                                    {% if preco == 0 %}
+                                    <h3 style="color: brown;"><b>FRETE GRATIS</b></h3>
+                                    {%else%}
+                                    <h3><b>{{preco}}</b></h3>
+                                    {% endif %}
+                                    {{frete_entrega}}
                             </td>
                     </tr>
                 </table>
         </div>
-
+        </div>
+    </div>
+        {% else %}
+        <h2 ><b>FRETE</b></h2>
+        <form method="post" action="{% url 'cars:carrinho' %}"> {% csrf_token %}
+            <input type="text" placeholder="MEU CEP" name="CEP">
+            <button type="submit">OK</button>
+        </form>
+        {% endif%}
         <div class="row mt-3">
             <div class="col-lg">
-                <h2 ><b>RESULMO</b></h2>
+                <h2><b>RESULMO</b></h2>
                 <div class='table-responsive'>
                     <table class="table">
                         <tr>
                             <td>
                                 <class='lead'>
-                                    Valor dos Produtos:</td>
-                                    <td>
-                                        <h2><b>{{carrinho|total_valores|valores}}</b></h2>
+                                    Valor:</td>
+                                    <td class="col-md-4">
+                                    <h3><b>{{carrinho|total_valores|valores}}</b></h3>
                                 </td>
                         </tr>
                     </table>
-                </div>
             </div>
-
-        
-        <div class="col-lg mt-auto">
-            
-            <a class="btn btn-lg btn-block btn-primary" 
-            {% if request.user.is_authenticated %}
-            href="{% url 'enderecos:endereco'%}">
-            {%else%}
-            href="{% url 'usuario:login'%}">
-            {%endif%}
-            
-                IR PARA O PAGAMENTO 
-            </a>
-
-            <a class="btn btn-lg btn-block btn-primary" href="{% url 'produto:produtos' %}">
-                CONTINUAR COMPRANDO
-             </a>
         </div>
     </div>
-</main>
+    {% if preco and carrinho or preco == 0.0 %}
+            <div class="row mt-3">
+                <div class="col-lg ">
+                    <h2 ><b>VALOR TOTAL</b></h2>
+                    <div class='table-responsive'>
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <class='lead'>
+                                        Valor total + frete:</td>
+                                        <td class="col-md-4">
+                                            {% if preco or preco == 0.0 %}
+                                            <h3><b>{{carrinho|total_frete:preco}}</b></h3>
+                                            {% else%}
+                                            <h1>sei la</h1>
+                                            {% endif %}
+                                    </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    {% endif %}
+        
+    <div class="col-lg mt-auto text-center">
+        
+    <a class="btn btn-lg btn-block btn-primary" 
+        {% if request.user.is_authenticated %}
+            href="{% url 'enderecos:endereco'%}">
+                {%else%}
+                href="{% url 'usuario:login'%}">
+                {%endif%}
+
+                    IR PARA O PAGAMENTO 
+                </a>
+
+                <a class="btn btn-lg btn-block btn-primary" href="{% url 'produto:produtos' %}">
+                    CONTINUAR COMPRANDO
+                    </a>
+            </div>
+        </div>
+    </main>
 <br><br><br>
 {%else%}
 <section class="py-5" >

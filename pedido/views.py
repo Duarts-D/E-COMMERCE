@@ -9,7 +9,7 @@ from utilidade.ultils import qtdcar,total_valoresp
 from django.views.generic import DetailView,ListView
 from pedido.emails import pedido_emailview
 from email.mime.image import MIMEImage
-
+from rolepermissions.permissions import grant_permission
 
 
 class Pedido_PD(View):
@@ -26,16 +26,19 @@ class Pedido_PD(View):
         
         perfil_user = Perfil_Endereco.objects.get(user_perfil=user.id)
         
-        
+        frete = self.request.session.get('frete')
+
         self.contexto = {
             'perfil_usuario': perfil_user, 
-            'carrinho': self.request.session.get('carrinho')
+            'carrinho': self.request.session.get('carrinho'),
+            'preco':frete['preco']
         }
 
     def get(self,*args,**kwargs):
         if not self.user_on:
             return redirect('usuario:login')
         
+
         user = Perfil_Usuario.objects.filter(user=self.request.user).first()
         perfil_user = Perfil_Endereco.objects.filter(user_perfil=user.id).exists()
         
@@ -179,4 +182,3 @@ class OsServicosView(ListView):
     paginate_by = 10 
     ordering = ['-pk']
     
-

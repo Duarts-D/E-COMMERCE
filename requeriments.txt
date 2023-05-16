@@ -1,11 +1,14 @@
 asgiref==3.6.0
 Django==4.1.6
 django-crispy-forms==1.14.0
+django-discover-runner==1.0
 django-pdfkit==0.3.1
+django-role-permissions==3.1.1
 pdfkit==1.0.0
 pi==0.1.2
 Pillow==9.4.0
 python-decouple==3.8
 python-dotenv==0.21.1
+six==1.16.0
 sqlparse==0.4.3
 tzdata==2022.7

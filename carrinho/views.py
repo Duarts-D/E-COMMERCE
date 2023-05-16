@@ -4,6 +4,10 @@ from django.contrib import messages
 from produto.models import Produto
 from urllib.parse import urlparse
 import re
+from utilidade.frete_correio import CalcularFreteCarrinho
+from usuario.models import Perfil_Usuario
+from endereco.models import Perfil_Endereco
+from utilidade.validators.cep import validador_cep
 
 class AdcCarrinho(View):
     def get(self,*args,**kwargs):
@@ -111,14 +115,54 @@ class AdcCarrinho(View):
 
 class Carrinho(View):
     template_name = 'carrinho.html'
-    def get(self,*args,**kwargs):
-        contexto = {
-            'carrinho' : self.request.session.get('carrinho',{})
+    contexto = {}
+    
+    def post(self,*args,**kwargs):
+        cep = self.request.POST.get('CEP')
+
+        if not validador_cep(cep):
+            messages.error(self.request,f'Cep invalido {cep}')
+            return redirect('cars:carrinho')
+        
+        endereco = validador_cep(cep)
+
+        carrinho = self.request.session.get('carrinho')
+        frete = CalcularFreteCarrinho(carrinho=carrinho,cep_destino=cep)
+        frete = frete.calcular_frete_carrinho()
+        self.contexto = {
+            'frete_entrega': frete[0],
+            'preco': frete[1],
+            'carrinho' : self.request.session.get('carrinho',{}),
+            'endereco': endereco
         }
-        return render(self.request,self.template_name,contexto)
+
+        return render(self.request,self.template_name,self.contexto)
+
+    def get(self,*args,**kwargs):
+        
+        if self.request.user.is_authenticated:
+            perfil = Perfil_Usuario.objects.get(user=self.request.user)
+            cep = Perfil_Endereco.objects.get(user_perfil=perfil).cep
+
+            if self.request.session.get('carrinho'):
+                carrinho = self.request.session.get('carrinho')
+                frete = CalcularFreteCarrinho(carrinho=carrinho,cep_destino=cep)
+                frete = frete.calcular_frete_carrinho()
+                self.contexto = {
+                    'frete_entrega': frete[0],
+                    'preco': frete[1],
+                }
+
+                self.request.session['frete'] = {'preco': frete[1]}
+                self.request.session.save()       
+        self.contexto['carrinho'] = self.request.session.get('carrinho',{})
+        
+
+        return render(self.request,self.template_name,self.contexto)
 
 class DelCarrinho(View):
     def get(self,*args,**kwargs):
+                
         http_refere = self.request.META.get(
             'HTTP_REFERER',
             reverse('produto:produtos')

@@ -1,5 +1,5 @@
 from django.template import Library
-from utilidade.ultils import qtdcar,valoresp,total_valoresp
+from utilidade.ultils import qtdcar,valoresp,total_valoresp,valor_total_frete
 register = Library()
 
 @register.filter(name='qtdcar')
@@ -13,3 +13,7 @@ def valores(valor):
 @register.filter(name='total_valores')
 def total_valor(total):
     return total_valoresp(total)
+
+@register.filter(name='total_frete')
+def valor_total_frt(carrinho,frete):
+    return valor_total_frete(carrinho,frete)

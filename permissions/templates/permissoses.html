@@ -1,0 +1,56 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load permistag %}
+
+{%block title%}
+<title>Gamers</title>
+{%endblock%}
+
+{% block head%}
+{% endblock %}
+
+{%block conteudo%}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row">
+            <div class="col">
+                <h3 class="mb-4">{{ user.first_name}} {{ user.last_name}}</h3>
+                <p> Abaixo todos funcionarios. </p>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr>
+                            <th scope="col">Funcionario</th>
+                            <th scope="col">Grupo</th>
+                            <th scope="col">Permissao</th>
+                            <th scope="col">Ativo</th>
+                        </tr>
+
+                        {% for funcionario in funcionarios %}
+                        <tr>
+                            <th scope="row">{{funcionario.first_name}} {{funcionario.last_name}}</td>
+                                {% for nome , fun  in dados.items %}
+                                
+                                {% if funcionario.first_name == nome %} 
+                                {{nome}}=nome
+                                <td>{{fun}}</td>
+                                {% endif %}
+                                {% endfor %}
+                            <td></td>
+                            <td>{{funcionario.is_active|sim_nao}}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    {% include 'parciais/_pagination.html'%}
+</section>
+
+{% endblock %}
+
+

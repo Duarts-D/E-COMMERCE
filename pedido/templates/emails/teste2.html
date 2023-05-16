@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load ultilsfilter%}
+{%block conteudo %}
+{% autoescape off %}
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+
+<div class="row">
+    <div class="col">
+        <h3>{{ produto }}</h3>
+        <p>{{produto.user.first_name}} {{produto.user.last_name}}</p>
+        <p>Compra realizada template html 2<p>
+        <div class="row mt-4">
+            <div class="col-lg-2 font-weight-bold">Número do pedido:</div>
+            <div class="col-lg-4"><b>"{{ produto.id }}"</b></div>
+            <div class="col-lg-2 font-weight-bold">Total pago:</div>
+            <div class="col-lg-4"><strong>{{ produto.qtd_valor_total|valores}}</strong></div>
+
+            <div class="col-lg-2 font-weight-bold">QTD. Itens:</div>
+            <div class="col-lg-4">{{ produto.total }}</div>
+            <div class="col-lg-2 font-weight-bold">Status:</div>
+            <div class="col-lg-4">{{ produto.get_status_display }}</div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <h3>Produtos</h3>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-3">
+            <table class="table">
+                <tr>
+                    <th>Imagem</th>
+                    <th>Produto</th>
+                    <th>Valor Unitario.</th>
+                    <th>QTD.</th>
+                    <th>Total</th>
+                </tr>
+
+                {% for linha in itempedido %}
+                <tr>
+                <td class="d-none d-lg-block">
+                <a>
+
+                <div class="card-img" style="width: 10rem;">
+                    <img class="card-img" src="{% get_media_prefix %}{{ linha.imagem }}" style="max-width: 150px;"/>
+
+                </a>
+            </td>
+                    <td><a>{{ linha.produto}}</a></td>
+
+                    {% if linha.preco_promo %}
+                    <td>{{ linha.preco_promo|valores}}</td>
+                    {%else%}
+                    <td>{{ linha.preco_unitario|valores}}</td>
+                    {%endif%}
+
+                    <td>{{ linha.quantidade}}x </td>
+
+                    {% if linha.preco_promo %}
+                        <td><b>{{ linha.preco_total_promo|valores}}</b></td>
+                    {% else %}
+                        <td><b>{{ linha.preco_total_unitario|valores}}</b></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+{% endautoescape %}
+
+{% endblock %}
