@@ -142,7 +142,15 @@ class Carrinho(View):
         
         if self.request.user.is_authenticated:
             perfil = Perfil_Usuario.objects.get(user=self.request.user)
-            cep = Perfil_Endereco.objects.get(user_perfil=perfil).cep
+            cep = Perfil_Endereco.objects.filter(user_perfil=perfil).first()
+            if not cep :
+                return redirect('enderecos:endereco')
+            cep = cep.cep
+            if not validador_cep(cep):
+                messages.error(self.request,f'Cep invalido {cep}')
+                return redirect('cars:carrinho')
+            
+            endereco = validador_cep(cep)
 
             if self.request.session.get('carrinho'):
                 carrinho = self.request.session.get('carrinho')
@@ -151,6 +159,7 @@ class Carrinho(View):
                 self.contexto = {
                     'frete_entrega': frete[0],
                     'preco': frete[1],
+                    'endereco': endereco
                 }
 
                 self.request.session['frete'] = {'preco': frete[1]}

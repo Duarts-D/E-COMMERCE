@@ -9,7 +9,8 @@ class Pedido(models.Model):
     total = models.PositiveIntegerField(verbose_name='Total de Produtos')
     qtd_valor_total = models.FloatField(max_length=300,verbose_name='Valor Total')
     status = models.CharField(max_length=1,choices=STATUS,default='C')
-
+    frete = models.FloatField(default=0)
+    
     def __str__(self):
         return f'Pedido N. {self.pk}'
 

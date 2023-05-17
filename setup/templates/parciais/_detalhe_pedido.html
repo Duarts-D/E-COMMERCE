@@ -6,15 +6,20 @@
         <h3>{{ produto }}</h3>
 
         <div class="row mt-4">
-            <div class="col-lg-2 font-weight-bold">Número do pedido:</div>
-            <div class="col-lg-4"><b>"{{ produto.id }}"</b></div>
             <div class="col-lg-2 font-weight-bold">Total a pagar:</div>
-            <div class="col-lg-4"><strong>{{ produto.qtd_valor_total|valores}}</strong></div>
+            <div class="col-lg-4"><strong>R${{produto.qtd_valor_total|email_frete:produto.frete}}</strong></div>
+
+            <div class="col-lg-2 font-weight-bold">Total em Produtos:</div>
+            <div class="col-lg-4"><strong>R${{ produto.qtd_valor_total}}</strong></div>
 
             <div class="col-lg-2 font-weight-bold">QTD. Itens:</div>
             <div class="col-lg-4">{{ produto.total }}</div>
+            
             <div class="col-lg-2 font-weight-bold">Status:</div>
             <div class="col-lg-4">{{ produto.get_status_display }}</div>
+
+            <div class="col-lg-2 font-weight-bold">Frete:</div>
+            <div class="col-lg-4">R$ {{ produto.frete }}</div>
         </div>
 
         <div class="row mt-4">

@@ -20,12 +20,15 @@ def total_valoresp(valores):
         return vlaor
 
 def valor_total_frete(carrinho,frete):
-        frete = str(frete).replace('R$','').replace(',','.')
-        frete = float(frete)
-        valor_total_carrinho = total_valoresp(carrinho)
-        total = frete + valor_total_carrinho        
-        total = valoresp(total)
-        return total
+        if frete is True:
+                return valoresp(total_valoresp(carrinho))
+        else:
+                frete = str(frete).replace('R$','').replace(',','.')
+                frete = float(frete)
+                valor_total_carrinho = total_valoresp(carrinho)
+                total = frete + valor_total_carrinho        
+                total = valoresp(total)
+                return total
 
 def email_valor_frete(valor_total,frete):
         frete = float(str(frete).replace(',','.'))

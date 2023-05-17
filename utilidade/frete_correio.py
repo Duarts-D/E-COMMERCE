@@ -21,7 +21,7 @@ class CalcularFreteCarrinho():
             total = total_valoresp(self.carrinho)
             tempo_de_entrega , valores = valor
             if total >= 3000 and float(valores) <= 200:
-                preco = 00.00
+                preco = True
                 return tempo_de_entrega, preco
             return valor
             

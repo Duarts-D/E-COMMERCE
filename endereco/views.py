@@ -3,7 +3,7 @@ from django.views import View
 from endereco.forms import Perfil_EndercoForm
 from endereco.models import Perfil_Endereco
 from usuario.models import Perfil_Usuario
-
+from utilidade.frete_correio import CalcularFreteCarrinho
 from django.contrib.auth.models import User
 
 class Endereco(View):
@@ -17,15 +17,25 @@ class Endereco(View):
     def post(self,*args,**kwargs):
             
         if self.perfil_form.is_valid():
-            
+            cep = self.request.POST.get('cep')
             user = self.request.user
             perfils = get_object_or_404(Perfil_Usuario,user=user)
 
             perfil = self.perfil_form.save(commit=False)
             perfil.user_perfil = perfils
             perfil.save()
+            
 
-            return redirect('pedido:pedido')
+            if self.request.session.get('carrinho'):
+                carrinho = self.request.session.get('carrinho')
+                frete = CalcularFreteCarrinho(carrinho=carrinho,cep_destino=cep)
+                frete = frete.calcular_frete_carrinho()
+
+                self.request.session['frete'] = {'preco': frete[1]}
+                self.request.session.save()     
+                return redirect('pedido:pedido')
+            else:
+                return redirect('cars:carrinho')
 
         else:
             return render(self.request,self.template_name,self.contexto)

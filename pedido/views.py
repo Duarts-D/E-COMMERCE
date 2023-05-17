@@ -102,12 +102,13 @@ class Salvar_pedido(View):
         qtd_total_carrinho = qtdcar(carrinho)
         valor_total_carrinho = total_valoresp(carrinho)
 
-
+        frete = self.request.session.get('frete')
         pedido = Pedido(
             user=self.request.user,
             total= qtd_total_carrinho,
             qtd_valor_total= valor_total_carrinho,
-            status = 'C'
+            status = 'P',
+            frete = frete['preco']
         )
 
         pedido.save()
@@ -139,7 +140,7 @@ class Salvar_pedido(View):
             produto_id.estoque = estoque - produto.quantidade
             produto_id.save()
         
-        frete = self.request.session.get('frete')
+        
         pedido_email_html(pk=pedido.pk,email_user=self.request.user.email,valor_frete=frete)
         messages.success(self.request,'Compra Realizada com Sucesso')
         
