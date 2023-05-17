@@ -192,6 +192,7 @@ class CorreioWebscript:
         preco = html_bs4.find_all('tfoot')
         preco = preco[0].find('td').text
         preco = preco.replace('R$','').replace(',','.').strip()
+        preco = float(preco)
 
         # Pegando tempo de entrega 
         tempo_de_entrega = html_bs4.find_all('tbody')

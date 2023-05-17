@@ -34,5 +34,4 @@ def email_valor_frete(valor_total,frete):
         frete = float(str(frete).replace(',','.'))
         valor_total = float(str(valor_total).replace(',','.'))
         total = valor_total + frete
-        valores = f'{total:_.2f} '.replace('_','.')
-        return valores
+        return total
