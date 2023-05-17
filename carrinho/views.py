@@ -145,6 +145,7 @@ class Carrinho(View):
             cep = Perfil_Endereco.objects.filter(user_perfil=perfil).first()
             if not cep :
                 return redirect('enderecos:endereco')
+            
             cep = cep.cep
             if not validador_cep(cep):
                 messages.error(self.request,f'Cep invalido {cep}')
