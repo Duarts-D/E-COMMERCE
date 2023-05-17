@@ -34,13 +34,17 @@
                     <div class="row mt-4">
                         <tr>
                         <th><div class="col-lg-2 font-weight-bold">Número do pedido:</div></th>
-                        <th><div class="col-lg-2 font-weight-bold">Total a pagar:</div></th>
+                        <th><div class="col-lg-2 font-weight-bold">Frete:</div></th>
+                        <th><div class="col-lg-2 font-weight-bold">Total em Produtos:</div></th>
+                        <th><div class="col-lg-2 font-weight-bold">Total Pago:</div></th>
                         <th><div class="col-lg-2 font-weight-bold">QTD. Itens:</div></th>
                         <th><div class="col-lg-2 font-weight-bold">Status:</div></th>
                         </tr>
                         <tr>
                         <td><div class="col-lg-4"><b>"{{ pedido.id }}"</b></div></td>
-                        <td><div class="col-lg-4"><strong>{{ pedido.qtd_valor_total|valores}}</strong></div></td>
+                        <td><div class="col-lg-4"><b>{{ pedido.frete|valores }}</b></div></td>
+                        <td><div class="col-lg-4"><b>{{ pedido.qtd_valor_total|valores }}</b></div></td>
+                        <td><div class="col-lg-4"><strong>{{ pedido.qtd_valor_total|email_frete:pedido.frete|valores }}</strong></div></td>
                         <td><div class="col-lg-4">{{ pedido.total }}</div></td>
                         <td><div class="text-danger" ><b>{{ pedido.get_status_display }}</b></div></td>
                     </tr>

@@ -45,7 +45,7 @@
                                     {% if preco is True %}
                                     <h3 style="color: brown;"><b>FRETE GRATIS</b></h3>
                                     {%else%}
-                                    <h3><b>{{preco}}</b></h3>
+                                    <h3><b>{{ preco|valores}}</b></h3>
                                     {% endif %}
                                     {{frete_entrega}}
                             </td>

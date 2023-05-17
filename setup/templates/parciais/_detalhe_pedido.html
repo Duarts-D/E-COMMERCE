@@ -19,7 +19,7 @@
             <div class="col-lg-4">{{ produto.get_status_display }}</div>
 
             <div class="col-lg-2 font-weight-bold">Frete:</div>
-            <div class="col-lg-4">R$ {{ produto.frete }}</div>
+            <div class="col-lg-4">{{ produto.frete|valores}}</div>
         </div>
 
         <div class="row mt-4">
