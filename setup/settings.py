@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'apps.categoria.apps.CategoriaConfig',
     'apps.page_except.apps.PageExceptConfig',
     'apps.gerador_pdf.apps.GeradorPdfConfig',
-    'crispy_forms',
     'apps.permissions.apps.PermissionsConfig',
     'rolepermissions',
 ]
