@@ -6,7 +6,7 @@ def validador_cep(cep):
 
     api_cep = f'https://viacep.com.br/ws/{cep}/json/'
     dados = requests.get(api_cep).json()
-
+    
     if 'erro' in dados:
         return False
     else:

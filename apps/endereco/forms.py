@@ -1,8 +1,9 @@
 from django import forms
-from apps.endereco.models import Perfil_Endereco
-from apps.endereco.models import ESTADO,LOCAL
-from apps.utilidade.validators.validators import digitos_validador,espaços_vazio_validador,tamanho_len_validador
-from apps.utilidade.validators.validators import caract_especiais_validador,string_validador
+from endereco.models import Perfil_Endereco
+from endereco.choices import ESTADO,LOCAL
+from utilidade.validators.validators import digitos_validador,espaços_vazio_validador,tamanho_len_validador
+from utilidade.validators.validators import string_validador,caract_especiais_validador
+from utilidade.validators.cep import validador_cep
 
 class Perfil_EndercoForm(forms.ModelForm):
     class Meta:
@@ -159,6 +160,9 @@ class Perfil_EndercoForm(forms.ModelForm):
 
             if espaços_vazio_validador(cep_data):
                 validation_error_msg['cep'] = 'CPF nao pode conter espaços vazios.'
+            
+            if not isinstance(validador_cep(cep_data),dict):
+                validation_error_msg['cep'] = 'Cep invalido.'
 
         if cidade_data:
             cidade_data = cidade_data.title()
