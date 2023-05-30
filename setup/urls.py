@@ -19,16 +19,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('endereco/',include('endereco.urls')),
-    path('pedido/',include('pedido.urls')),
-    path('carrinho/',include('carrinho.urls')),
-    path('',include('usuario.urls')),
+    path('endereco/',include('apps.endereco.urls')),
+    path('pedido/',include('apps.pedido.urls')),
+    path('carrinho/',include('apps.carrinho.urls')),
+    path('',include('apps.usuario.urls')),
     path('admin/', admin.site.urls),
-    path('',include('produto.urls')),
-    path('gerar/',include('gerador_pdf.urls')),
-    path('permissions/',include('permissions.urls')),
+    path('',include('apps.produto.urls')),
+    path('gerar/',include('apps.gerador_pdf.urls')),
+    path('permissions/',include('apps.permissions.urls')),
 
 
 ] +static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
-handler404 ="page_except.views.handler404"
+handler404 ="apps.page_except.views.handler404"

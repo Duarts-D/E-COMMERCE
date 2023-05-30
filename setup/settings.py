@@ -44,16 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'produto.apps.ProdutoConfig',
-    'endereco.apps.EnderecoConfig',
-    'usuario.apps.UsuarioConfig',
-    'carrinho.apps.CarrinhoConfig',
-    'pedido.apps.PedidoConfig',
-    'categoria.apps.CategoriaConfig',
-    'page_except.apps.PageExceptConfig',
-    'gerador_pdf.apps.GeradorPdfConfig',
-    'crispy_forms',
-    'permissions.apps.PermissionsConfig',
+    'apps.produto.apps.ProdutoConfig',
+    'apps.endereco.apps.EnderecoConfig',
+    'apps.usuario.apps.UsuarioConfig',
+    'apps.carrinho.apps.CarrinhoConfig',
+    'apps.pedido.apps.PedidoConfig',
+    'apps.categoria.apps.CategoriaConfig',
+    'apps.page_except.apps.PageExceptConfig',
+    'apps.gerador_pdf.apps.GeradorPdfConfig',
+    'apps.permissions.apps.PermissionsConfig',
     'rolepermissions',
 ]
 
@@ -178,4 +177,4 @@ EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST = config('EMAIL_HOST')
 
 # ROLE PERMISSIONS
-ROLEPERMISSIONS_MODULE = "permissions.permissoes_roles"
+ROLEPERMISSIONS_MODULE = "apps.permissions.permissoes_roles"
