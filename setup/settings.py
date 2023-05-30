@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path,os
 from dotenv import load_dotenv
-from decouple import config
+from apps.config import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,EMAIL_USE_TLS,EMAIL_PORT,EMAIL_HOST
 from django.contrib.messages import constants
 
 load_dotenv()
@@ -170,11 +170,11 @@ MESSAGE_TAGS = {
 #EMAIL
 DEFAULT_FROM_EMAIL = "Lojagamerservidor"
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS')
-EMAIL_PORT = config('EMAIL_PORT')
-EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_USE_TLS = EMAIL_USE_TLS
+EMAIL_PORT = EMAIL_PORT
+EMAIL_HOST = EMAIL_HOST
 
 # ROLE PERMISSIONS
 ROLEPERMISSIONS_MODULE = "apps.permissions.permissoes_roles"
