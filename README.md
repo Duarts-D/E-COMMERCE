@@ -61,6 +61,9 @@ Sempre focado na melhor experiência do usuário e otimizando as consultas no ba
 Para roda o gerador de PDF necessario  conter instalado
 wkhtmltopdf 0.12.5 +
 
+# E-mail
+Inserir dados e-mail em apps.config.py
+
 ## Como execultar o projeto
 
 ```bash
