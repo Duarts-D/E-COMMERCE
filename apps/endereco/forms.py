@@ -1,9 +1,9 @@
 from django import forms
-from endereco.models import Perfil_Endereco
-from endereco.choices import ESTADO,LOCAL
-from utilidade.validators.validators import digitos_validador,espaços_vazio_validador,tamanho_len_validador
-from utilidade.validators.validators import string_validador,caract_especiais_validador
-from utilidade.validators.cep import validador_cep
+from apps.endereco.models import Perfil_Endereco
+from apps.endereco.choices import ESTADO,LOCAL
+from apps.utilidade.validators.validators import digitos_validador,espaços_vazio_validador,tamanho_len_validador
+from apps.utilidade.validators.validators import string_validador,caract_especiais_validador
+from apps.utilidade.validators.cep import validador_cep
 
 class Perfil_EndercoForm(forms.ModelForm):
     class Meta:
