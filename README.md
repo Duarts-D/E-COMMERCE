@@ -100,5 +100,5 @@ linux - python3 manage.py runserver
 ## Se preferir Docker
 ```bash
 # Executar Docker Compose
-Docker - docker compose -up -d 
+Docker - docker compose up -d 
 ```
