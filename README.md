@@ -92,6 +92,10 @@ windows - python manage.py migrate
 linux - python3 manage.py makemigrations
 linux - python3 manage.py migrate
 
+# Popular banco de dados
+linux - python3 insert_banco.py
+windows - python insert_banco.py
+
 # executar o projeto
 windows - python manage.py runserver
 linux - python3 manage.py runserver
@@ -99,6 +103,8 @@ linux - python3 manage.py runserver
 
 ## Se preferir Docker
 ```bash
-# Executar Docker Compose
+# Executar Docker Compose 
+''' Esta configurado para pre-popular banco de dados'''
 Docker - docker compose up -d 
+
 ```
