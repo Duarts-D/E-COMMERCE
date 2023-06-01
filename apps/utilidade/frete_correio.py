@@ -52,9 +52,9 @@ class CalcularFreteCarrinho():
             
             correio = CorreioWebscript(ceporigem=CEPORIGEM,
                                         cepdestino=self.cep_destino,
-                                        altura=self.p_altura,
-                                        largura=self.p_largura,
-                                        comprimento=self.p_comprimento,
+                                        altura=self.p_altura if not self.p_altura <= 1 else 2.0 ,
+                                        largura=self.p_largura if not self.p_largura <= 9.0 else 10.0,
+                                        comprimento=self.p_comprimento if not self.p_comprimento <= 14.0 else 15.0,
                                         peso=self.p_peso)
             valor = correio.frete()
             return self.desconto(valor)
