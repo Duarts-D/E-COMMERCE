@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     wkhtmltopdf
 
-ARG PORT_BUILD=6000
+ARG PORT_BUILD=8000
 ENV PORT=$PORT_BUILD
 
 COPY requeriments.txt ./
@@ -39,5 +39,9 @@ RUN pip install --upgrade pip && \
 
 COPY . .
 
+RUN python3 manage.py makemigrations
+RUN python3 manage.py migrate
+RUN python3 insert_banco.py
+
 EXPOSE $PORT
-CMD ["python", "manage.py", "runserver", "0.0.0.0:6000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
