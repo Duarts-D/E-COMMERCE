@@ -2,11 +2,18 @@ from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import get_object_or_404,get_list_or_404
 from django.template.loader import render_to_string
 from email.mime.image import MIMEImage
-from apps.config import EMAIL_HOST_USER
+try:
+    from apps.config import EMAIL_HOST_USER
+except ImportError:
+    decouple_config = False
 from apps.pedido.models import Pedido,Itempedido
 
 
 def pedido_email_html(pk,email_user,valor_frete):
+
+    if decouple_config is False:
+        return 'Config-email nao configurado'
+    
     pedido = get_object_or_404(Pedido,pk=pk)
     itempedido = get_list_or_404(Itempedido,pedido=pedido)
     imagens=[]
