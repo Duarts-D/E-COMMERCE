@@ -247,10 +247,10 @@
 
             </div>
             {% if preco is True %}
-            <div class="col-lg-2 font-weight-bold">Total pago: R${{ produto.qtd_valor_total }} </div>
+            <div class="col-lg-2 font-weight-bold">Total pago: {{ produto.qtd_valor_total|valores }} </div>
             <div class="col-lg-2 font-weight-bold">Frete : R$ FRETE GRATIS </div>
             {% else %}
-            <div class="col-lg-2 font-weight-bold">Total pago: R${{ produto.qtd_valor_total|email_frete:preco }} </div>
+            <div class="col-lg-2 font-weight-bold">Total pago:{{ produto.qtd_valor_total|email_frete:preco|valores }} </div>
             <div class="col-lg-2 font-weight-bold">Frete : R$ {{ preco|valores }}
             {% endif %}
             <div class="col-lg-2 font-weight-bold">QTD. Itens: {{ produto.total }} </div>
