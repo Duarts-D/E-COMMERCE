@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404,get_list_or_404
 from django.template.loader import render_to_string
 from email.mime.image import MIMEImage
 try:
+    decouple_config = True
     from apps.config import EMAIL_HOST_USER
 except ImportError:
     decouple_config = False
