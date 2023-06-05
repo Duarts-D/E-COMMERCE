@@ -1,5 +1,5 @@
 
-# LOJA - GAMERS E-ECOMMERCER
+# LOJA - GAMERS E-ECOMMERCE
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/Duarts-D/E-COMMERCER/blob/master/LICENSE)
 
 # Sobre o projeto
