@@ -1,8 +1,12 @@
 {% extends 'base/base.html' %}
+{% load ultilsfilter%}
+
 {%block title%}
 <title>{{detalhe}}</title>
 {%endblock%}
+
 {% block head %}{%endblock%}
+
 {% block conteudo%}
 
 {% if detalhe %}
@@ -15,10 +19,10 @@
         <h1 class="display-5 fw-bolder">{{ detalhe.nome}}</h1>
         <div class="fs-5 mb-5">
             {% if detalhe.preco_promocional %}
-            <span class="text-decoration-line-through">{{ detalhe.preco }}</span>
-            <span>{{ detalhe.preco_promocional }}</span>
+            <span class="text-decoration-line-through">{{ detalhe.preco|valores }}</span>
+            <span>{{ detalhe.preco_promocional |valores }}</span>
             {%else%}
-            <span>{{ detalhe.preco }}</span>
+            <span>{{ detalhe.preco|valores }}</span>
             {% endif %}
         </div>
         <p class="lead">{{ detalhe.descricao_longa }}</p>
