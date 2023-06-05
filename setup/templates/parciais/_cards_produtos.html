@@ -1,4 +1,5 @@
 {% load static %}
+{% load ultilsfilter %}
 
 <div class="col mb-5">
     <div class="card h-100">
@@ -30,11 +31,11 @@
         </div>
         <!-- Product price-->
         {% if produto.preco_promocional %}
-        <span class="text-muted text-decoration-line-through">{{ produto.preco}}</span>
-        {{ produto.preco_promocional }}
+        <span class="text-muted text-decoration-line-through">{{ produto.preco|valores }}</span>
+        {{ produto.preco_promocional |valores }}
         {%else%}
         <span class="text-muted text-decoration-line-through"></span>
-        {{ produto.preco}}
+        {{ produto.preco|valores }}
         {% endif%}
     
     </div>
