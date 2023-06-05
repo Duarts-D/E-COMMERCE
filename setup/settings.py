@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path,os
 from dotenv import load_dotenv
 try:
+    decouple_config = True
     from apps.config import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,EMAIL_USE_TLS,EMAIL_PORT,EMAIL_HOST
 except ImportError:
     decouple_config = False
+
 from django.contrib.messages import constants
+
 
 load_dotenv()
 
@@ -171,7 +174,7 @@ MESSAGE_TAGS = {
 }
 
 #EMAIL
-if not decouple_config is False:
+if decouple_config:
     DEFAULT_FROM_EMAIL = "Lojagamerservidor"
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST_USER = EMAIL_HOST_USER
