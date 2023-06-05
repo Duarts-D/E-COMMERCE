@@ -58,11 +58,11 @@ Sempre focado na melhor experiência do usuário e otimizando as consultas no ba
 - Bootstrap
 
 # PDF
-Para roda o gerador de PDF necessario  conter instalado
+Para roda o gerador de PDF necessario  conter instalado na sua maquina
 wkhtmltopdf 0.12.5 +
 
 # E-mail
-Inserir dados e-mail em apps.config.py
+Para funcionadade e-mail , inserir dados em apps.config.py  e-mail 
 
 ## Como execultar o projeto
 
