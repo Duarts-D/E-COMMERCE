@@ -2,7 +2,16 @@
 # LOJA - GAMERS E-ECOMMERCE
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/Duarts-D/E-COMMERCER/blob/master/LICENSE)
 
+## Demonstração
+
+http://ecomerce-env.eba-nyazcm3u.sa-east-1.elasticbeanstalk.com/
+
+- login = lojagamerservidor@gmail.com
+- senha = Username123
+
 # Sobre o projeto
+
+
 A loja Gamer - E estilo e-commerce criado com python, django, bootstrap e outros.
 
 E uma loja de vendas funcional que agrega do início da compra até a hora do pagamento, sempre escolhendo a facilidade para melhorar a experiência do usuário.
