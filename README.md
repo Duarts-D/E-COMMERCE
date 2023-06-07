@@ -92,6 +92,7 @@ Windows - .\venv\Scripts\Activate.ps1
 linux - source ./venv/bin/activate
 
 # instalar dependências
+pip install --upgrade pip
 pip install -r requeriments.txt
 
 # rodando migraçoes
