@@ -4,7 +4,7 @@
 
 ## Demonstração
 
-http://ecomerce-env.eba-nyazcm3u.sa-east-1.elasticbeanstalk.com/
+http://loja-gamer.sa-east-1.elasticbeanstalk.com/
 
 - login = lojagamerservidor@gmail.com
 - senha = Username123
