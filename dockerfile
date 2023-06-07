@@ -33,6 +33,9 @@ RUN apt-get update && apt-get install -y \
 ARG PORT_BUILD=8000
 ENV PORT=$PORT_BUILD
 
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
 COPY requeriments.txt ./
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requeriments.txt
@@ -43,5 +46,5 @@ RUN python3 manage.py makemigrations
 RUN python3 manage.py migrate
 RUN python3 insert_banco.py
 
-EXPOSE $PORT
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+EXPOSE 80
+CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
