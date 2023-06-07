@@ -89,7 +89,7 @@ linux - python3 -m venv venv
 
 # Ativando ambiente virtual
 Windows - .\venv\Scripts\Activate.ps1
-linux - source venv\bin\activate
+linux - source ./venv/bin/activate
 
 # instalar dependências
 pip install -r requeriments.txt
