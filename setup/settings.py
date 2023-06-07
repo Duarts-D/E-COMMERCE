@@ -14,7 +14,8 @@ from pathlib import Path,os
 from dotenv import load_dotenv
 try:
     decouple_config = True
-    from apps.config import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,EMAIL_USE_TLS,EMAIL_PORT,EMAIL_HOST
+    from apps.config import EMAIL_HOST_USER,EMAIL_HOST_PASSWORD,EMAIL_USE_TLS,EMAIL_PORT,EMAIL_HOST,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_STORAGE_BUCKET_NAME
+
 except ImportError:
     decouple_config = False
 
@@ -36,7 +37,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'apps.gerador_pdf.apps.GeradorPdfConfig',
     'apps.permissions.apps.PermissionsConfig',
     'rolepermissions',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -134,11 +136,30 @@ USE_I18N = True
 
 USE_TZ = True
 
+# AWS bucket
+AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY  = AWS_SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+AWS_SS3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_DEFAULT_ACL = 'public-read'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl' : 'max-age=86400'
+}
+AWS_LOCATION = 'static'
+AWS_QUERYSTRING_AUTH = False
+AWS_HEADERS = {
+    'Access-Control-Allow-Origin': '*',
+}
+
+
+# AWS S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = f'https://{AWS_SS3_CUSTOM_DOMAIN}/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR / 'setup/static' )
@@ -148,7 +169,7 @@ STATIC_ROOT = os.path.join(BASE_DIR / 'static' )
 # MEDIA
 
 MEDIA_ROOT = os.path.join(BASE_DIR/'media')
-MEDIA_URL = '/media/'
+MEDIA_URL =  f'https://{AWS_SS3_CUSTOM_DOMAIN}/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -185,3 +206,4 @@ if decouple_config:
 
 # ROLE PERMISSIONS
 ROLEPERMISSIONS_MODULE = "apps.permissions.permissoes_roles"
+

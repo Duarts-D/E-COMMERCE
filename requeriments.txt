@@ -1,9 +1,11 @@
+beautifulsoup4==4.12.2
+boto3==1.26.148
 bs4==0.0.1
 Django==4.1.6
 django-pdfkit==0.3.1
 django-role-permissions==3.1.1
+django-storages==1.13.2
 pdfkit==0.6.0
-pi==0.1.2
 Pillow==9.4.0
 python-decouple==3.8
 python-dotenv==0.21.1

@@ -16,3 +16,8 @@ try:
     EMAIL_HOST= config('EMAIL_HOST')
 except UndefinedValueError:
     print ('Favor preencher variaveis sensivel do email se necessario utilizar sistema de e-mail')
+
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
