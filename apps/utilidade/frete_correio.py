@@ -50,6 +50,20 @@ class CalcularFreteCarrinho():
 
                 self.p_peso = (produto.peso * quantidade) + self.p_peso
             
+            # limite de dimensões de embalagens correio:
+            # compriemnto = minimo 15cm , max 100cm
+            # largura = minimo 10cm , max 100cm
+            # altura = minimo 1cm , max 100cm
+            if self.p_comprimento >= 100 and self.p_comprimento <= 199:
+                self.p_comprimento = self.p_comprimento / 2
+            
+            if self.p_altura >= 100 and self.p_altura <= 199 :
+                self.p_altura = self.p_altura / 2
+            
+            if self.p_largura >= 100 :
+                self.p_largura = 100
+
+
             correio = CorreioWebscript(ceporigem=CEPORIGEM,
                                         cepdestino=self.cep_destino,
                                         altura=self.p_altura if not self.p_altura <= 1 else 2.0 ,
