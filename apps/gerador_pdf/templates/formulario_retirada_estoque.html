@@ -72,7 +72,7 @@
                             <td class="d d-lg">
                             {% if not linha.imagem == '' %}
                             <div class="card-img" style="width: 10rem;">
-                                <img src="{{path}}{% get_media_prefix %}{{linha.imagem }}" width="150" height="150">
+                                <img src="{{linha.imagem }}" width="150" height="150">
                             {% else %}
                                 <img class="card-img" src="{% static 'imgs/imagem_indisponivel.jpg' %}" >
                             {% endif %}    

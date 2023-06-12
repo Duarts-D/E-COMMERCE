@@ -21,7 +21,7 @@ class Produto(models.Model):
     estoque = models.PositiveIntegerField(default=1)
     imagem = models.ImageField(upload_to='media/%Y/%m/%d',blank=True,null=True)
     publico = models.BooleanField(default=False)
-    slug = models.SlugField(unique=True,blank=True)
+    slug = models.SlugField(unique=True,blank=True,max_length=300)
     categoria = models.CharField(max_length=3,choices=CATEGORIAS,default='CPU')
     peso = models.FloatField(default=0,blank=True,null=True)
     comprimento = models.FloatField(default=0,blank=True,null=True)

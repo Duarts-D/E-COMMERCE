@@ -17,15 +17,17 @@ def pedido_email_html(pk,email_user,valor_frete):
     
     pedido = get_object_or_404(Pedido,pk=pk)
     itempedido = get_list_or_404(Itempedido,pedido=pedido)
-    imagens=[]
+    
 
-    for imagem in itempedido:
-        img_path = 'media/'+ imagem.imagem
-        with open(img_path,'rb') as f:
-            logo_data = f.read()
-        logo = MIMEImage(logo_data)
-        logo.add_header('Content-ID',f'<{imagem.imagem}>')
-        imagens.append(logo)
+    # Utilizar para  modo local arquivos acoplados no projeto
+    # imagens=[]
+    # for imagem in itempedido:
+    #     img_path = 'media/' + imagem.imagem
+    #     with open(img_path,'rb') as f:
+    #         logo_data = f.read()
+    #     logo = MIMEImage(logo_data)
+    #     logo.add_header('Content-ID',f'<{imagem.imagem}>')
+    #     imagens.append(logo)
 
     contexto={'produto':pedido,
                 'itempedido':itempedido,
@@ -47,7 +49,7 @@ def pedido_email_html(pk,email_user,valor_frete):
 
     email.attach_alternative(html_content_alt,'text/html')
 
-    for anexo in imagens:
-       email.attach(anexo)
+    # for anexo in imagens:
+      #  email.attach(anexo)
     
     return email.send()

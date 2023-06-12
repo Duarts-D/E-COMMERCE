@@ -43,7 +43,7 @@ class AdcCarrinho(View):
         imagem = produto.imagem
 
         if imagem:
-            imagem = imagem.name
+            imagem = produto.imagem.url
         else:
             imagem = ''
         
