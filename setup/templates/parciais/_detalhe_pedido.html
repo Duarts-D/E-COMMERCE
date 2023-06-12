@@ -46,7 +46,7 @@
                 {% if not linha.imagem == '' %}
                 <div class="card-img" style="width: 10rem;">
                     
-                    <img class="card-img" src="{% get_media_prefix %}{{ linha.imagem }}">
+                    <img class="card-img" src="{{ linha.imagem }}">
                 {% else %}
                     <img class="card-img" src="{% static 'imgs/imagem_indisponivel.jpg' %}" >
                 {% endif %}    

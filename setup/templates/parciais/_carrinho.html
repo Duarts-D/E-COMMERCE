@@ -17,7 +17,7 @@
     <td class="d-none d-lg-block">
         {% if not itens.imagem == '' %}
         <div class="card-img" style="width: 10rem;">
-            <img class="card-img" src="{% get_media_prefix %}{{ itens.imagem }}">
+            <img class="card-img" src="{{ itens.imagem }}">
         {% else %}
             <img class="card-img" src="{% static 'imgs/imagem_indisponivel.jpg' %}" >
         {% endif %}

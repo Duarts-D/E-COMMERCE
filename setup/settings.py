@@ -21,7 +21,6 @@ except ImportError:
 
 from django.contrib.messages import constants
 
-
 load_dotenv()
 
 
@@ -206,4 +205,3 @@ if decouple_config:
 
 # ROLE PERMISSIONS
 ROLEPERMISSIONS_MODULE = "apps.permissions.permissoes_roles"
-
